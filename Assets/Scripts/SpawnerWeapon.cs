@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpawnerWeapon : MonoBehaviour
 {
-    [SerializeField] private GameObject weaponPrefab;
+    [SerializeField] private List<GameObject> weaponPrefabs;
 
     [SerializeField] private float minSpawnRate = 5.0f;
     [SerializeField] private float maxSpawnRate = 10.0f;
@@ -40,11 +40,12 @@ public class SpawnerWeapon : MonoBehaviour
         bool weaponSpawned = false;
         while (!weaponSpawned)
         {
-            int randomIndex = Random.Range(0, weaponHolders.Length);
-            WeaponHolder weaponHolder = weaponHolders[randomIndex];
+            int randomHolder = Random.Range(0, weaponHolders.Length);
+            int randomWeapon = Random.Range(0, weaponPrefabs.Count);
+            WeaponHolder weaponHolder = weaponHolders[randomHolder];
             if (!weaponHolder.HasWeapon())
             {
-                GameObject weapon = Instantiate(weaponPrefab, weaponHolder.transform.position, weaponHolder.transform.rotation);
+                GameObject weapon = Instantiate(weaponPrefabs[randomWeapon], weaponHolder.transform.position, weaponHolder.transform.rotation);
                 weaponHolder.SetWeapon(weapon);
                 weaponSpawned = true;
             }

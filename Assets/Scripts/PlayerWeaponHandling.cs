@@ -8,10 +8,20 @@ public class PlayerWeaponHandling : MonoBehaviour
     [SerializeField]
     private Transform weaponHolder;
     private Weapon currentWeapon = null;
+    private bool isShooting = false;
+
+    void Update()
+    {
+        if (HasWeapon())
+        {
+            if (isShooting)
+                currentWeapon.Shoot(transform.forward, transform.position);
+        }
+    }
 
     public void EquipWeapon(GameObject weapon)
     {
-        if (currentWeapon != null)
+        if (HasWeapon())
         {
             currentWeapon.Throw(transform.forward,transform.position);
             Destroy(currentWeapon.gameObject);
@@ -23,21 +33,25 @@ public class PlayerWeaponHandling : MonoBehaviour
 
     public void Shoot(InputAction.CallbackContext context)
     {
-        if (currentWeapon != null)
+        if (HasWeapon())
         {
-            if(context.performed) 
-                currentWeapon.Shoot(transform.forward, transform.position);
-            if(context.canceled)
+            isShooting = context.ReadValueAsButton();
+            if (context.canceled)
                 currentWeapon.StopShoot();
         }
     }
 
     public void Throw()
     {
-        if (currentWeapon != null)
+        if (HasWeapon())
         {
             currentWeapon.Throw(transform.forward, transform.position);
             Destroy(currentWeapon.gameObject);
         }
+    }
+
+    private bool HasWeapon()
+    {
+        return currentWeapon != null;
     }
 }

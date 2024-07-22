@@ -16,7 +16,6 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector2 move;
     private Vector2 rotateDirection;
-    private InputAction moveAction;
 
     void Start()
     {

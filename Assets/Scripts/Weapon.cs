@@ -31,10 +31,30 @@ public class Weapon : MonoBehaviour
 
     private int currentAmmunition;
     protected bool canShoot = true;
+    private float timerFire;
 
     void Awake()
     {
         currentAmmunition = ammunition;
+        timerFire = fireRate;
+    }
+
+    void Update()
+    {
+        if (HasNoAmmunition())
+        {
+            return;
+        }
+
+        if (!canShoot)
+        {
+            timerFire -= Time.deltaTime;
+            if (timerFire <= 0)
+            {
+                canShoot = true;
+                timerFire = fireRate;
+            }
+        }
     }
 
     public void Shoot(Vector3 direction, Vector3 origin)
@@ -98,15 +118,18 @@ public class Weapon : MonoBehaviour
 
     private void ShootBehavior()
     {
-        currentAmmunition--;
-        muzzleFlash.Play();
-        GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint);
-        bullet.transform.SetParent(null);
-        BulletBehaviour bulletBehaviour = bullet.GetComponent<BulletBehaviour>();
-        bulletBehaviour.SetDirection(bulletSpawnPoint.forward);
-        bulletBehaviour.StartMove = true;
-        bulletBehaviour.SetupBullet(bulletSpeed, range, damage);
-        if (!IsAutomatic() || HasNoAmmunition())
+        if (canShoot)
+        {
+            Debug.Log("Shoot");
+            currentAmmunition--;
+            muzzleFlash.Play();
+            GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint);
+            bullet.transform.SetParent(null);
+            BulletBehaviour bulletBehaviour = bullet.GetComponent<BulletBehaviour>();
+            bulletBehaviour.SetDirection(bulletSpawnPoint.forward);
+            bulletBehaviour.StartMove = true;
+            bulletBehaviour.SetupBullet(bulletSpeed, range, damage);
             canShoot = false;
+        }
     }
 }
