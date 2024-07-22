@@ -5,6 +5,15 @@ using UnityEngine.InputSystem;
 
 public class PlayerWeaponHandling : MonoBehaviour
 {
+    public delegate void OnWeaponChange(Weapon weapon);
+    public event OnWeaponChange onWeaponChange;
+
+    public delegate void OnWeaponThrow(Weapon weapon);
+    public event OnWeaponThrow onWeaponThrow;
+
+    public delegate void OnWeaponShoot(Weapon weapon);
+    public event OnWeaponShoot onWeaponShoot;
+
     [SerializeField]
     private Transform weaponHolder;
     private Weapon currentWeapon = null;
@@ -15,7 +24,10 @@ public class PlayerWeaponHandling : MonoBehaviour
         if (HasWeapon())
         {
             if (isShooting)
+            {
                 currentWeapon.Shoot(transform.forward, transform.position);
+                onWeaponShoot?.Invoke(currentWeapon);
+            }
         }
     }
 
@@ -24,11 +36,13 @@ public class PlayerWeaponHandling : MonoBehaviour
         if (HasWeapon())
         {
             currentWeapon.Throw(transform.forward,transform.position);
+            onWeaponThrow?.Invoke(currentWeapon);
             Destroy(currentWeapon.gameObject);
         }
         GameObject newWeapon = Instantiate(weapon, weaponHolder);
         newWeapon.transform.SetParent(weaponHolder.transform);
         currentWeapon = newWeapon.GetComponent<Weapon>();
+        onWeaponChange?.Invoke(currentWeapon);
     }
 
     public void Shoot(InputAction.CallbackContext context)
@@ -46,6 +60,7 @@ public class PlayerWeaponHandling : MonoBehaviour
         if (HasWeapon())
         {
             currentWeapon.Throw(transform.forward, transform.position);
+            onWeaponThrow?.Invoke(currentWeapon);
             Destroy(currentWeapon.gameObject);
         }
     }

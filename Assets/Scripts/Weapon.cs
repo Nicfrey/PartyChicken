@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,16 @@ public class Weapon : MonoBehaviour
         SemiAutomatic,
         Burst
     }
+
+    public enum WeaponName
+    {
+        Pistol,
+        Shotgun,
+        AssaultRifle,
+        SniperRifle,
+        RocketLauncher
+    }
+
     [SerializeField]
     protected int ammunition;
     [SerializeField] 
@@ -28,6 +39,8 @@ public class Weapon : MonoBehaviour
     protected Transform bulletSpawnPoint;
     [SerializeField]
     protected float bulletSpeed;
+    [SerializeField]
+    protected WeaponName weaponName;
 
     private int currentAmmunition;
     protected bool canShoot = true;
@@ -75,7 +88,7 @@ public class Weapon : MonoBehaviour
 
     public void StopShoot()
     {
-        if(!HasNoAmmunition())
+        if(!HasNoAmmunition() && IsFireRateDone())
             canShoot = true;
     }
 
@@ -130,6 +143,43 @@ public class Weapon : MonoBehaviour
             bulletBehaviour.StartMove = true;
             bulletBehaviour.SetupBullet(bulletSpeed, range, damage);
             canShoot = false;
+        }
+    }
+
+    private bool IsFireRateDone()
+    {
+        return timerFire <= 0;
+    }
+
+    public int GetAmmunition()
+    {
+        return currentAmmunition;
+    }
+
+    public int GetTotalAmmunition()
+    {
+        return ammunition;
+    }
+
+    public String GetName()
+    {
+        switch (weaponName)
+        {
+            case WeaponName.Pistol:
+                return "Pistol";
+            case WeaponName.Shotgun:
+                return "Shotgun";
+            case WeaponName.AssaultRifle:
+                return "Assault Rifle";
+                break;
+            case WeaponName.SniperRifle:
+                return "Sniper Rifle";
+                break;
+            case WeaponName.RocketLauncher:
+                return "Rocket Launcher";
+                break;
+            default:
+                return "Unknown";
         }
     }
 }
