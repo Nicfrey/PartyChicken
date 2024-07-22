@@ -26,6 +26,8 @@ public class Weapon : MonoBehaviour
     protected GameObject bulletPrefab;
     [SerializeField]
     protected Transform bulletSpawnPoint;
+    [SerializeField]
+    protected float bulletSpeed;
 
     private int currentAmmunition;
     protected bool canShoot = true;
@@ -80,17 +82,8 @@ public class Weapon : MonoBehaviour
 
     private void CommonTask()
     {
-        currentAmmunition--;
-        Debug.Log("Current ammunition: " + currentAmmunition);
-        muzzleFlash.Play();
-        GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint);
-        BulletBehaviour bulletBehaviour = bullet.GetComponent<BulletBehaviour>();
-        bulletBehaviour.SetDirection(bulletSpawnPoint.forward);
-        bulletBehaviour.StartMove = true;
-        bulletBehaviour.Range = range;
-        bulletBehaviour.Speed = 50f;
-        if (!IsAutomatic() || HasNoAmmunition()) 
-            canShoot = false;
+        ShootBehavior();
+        // TODO fake recoil effect
     }
 
     private bool HasNoAmmunition()
@@ -101,5 +94,19 @@ public class Weapon : MonoBehaviour
     private bool IsAutomatic()
     {
         return fireMode == FireMode.Automatic;
+    }
+
+    private void ShootBehavior()
+    {
+        currentAmmunition--;
+        muzzleFlash.Play();
+        GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint);
+        bullet.transform.SetParent(null);
+        BulletBehaviour bulletBehaviour = bullet.GetComponent<BulletBehaviour>();
+        bulletBehaviour.SetDirection(bulletSpawnPoint.forward);
+        bulletBehaviour.StartMove = true;
+        bulletBehaviour.SetupBullet(bulletSpeed, range, damage);
+        if (!IsAutomatic() || HasNoAmmunition())
+            canShoot = false;
     }
 }

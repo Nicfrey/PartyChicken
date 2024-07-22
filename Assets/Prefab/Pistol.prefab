@@ -4940,6 +4940,9 @@ MonoBehaviour:
   fireMode: 1
   fireRate: 0.4
   muzzleFlash: {fileID: 5452825855391692125}
+  bulletPrefab: {fileID: 8599029945474656996, guid: c6d13e91ac4d62c45a5680d7e7873c57, type: 3}
+  bulletSpawnPoint: {fileID: 3912487043117483104}
+  bulletSpeed: 15
 --- !u!1001 &4664267609451992889
 PrefabInstance:
   m_ObjectHideFlags: 0

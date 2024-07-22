@@ -8,14 +8,6 @@ public class Pistol : Weapon
     {
         if (canShoot)
         {
-            if(Physics.Raycast(origin, direction,out RaycastHit hit, range))
-            {
-                if (hit.collider.TryGetComponent(out Target component))
-                {
-                    component.TakeDamage(damage);
-                }
-            }
-
             base.ShootSemiAutomatic(direction, origin);
         }
     }
