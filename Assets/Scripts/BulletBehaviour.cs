@@ -15,8 +15,7 @@ public class BulletBehaviour : MonoBehaviour
 
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        startPosition = transform.position;
+        StartSetup();
     }
 
     // Update is called once per frame
@@ -27,11 +26,10 @@ public class BulletBehaviour : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (StartMove)
-            rb.velocity = transform.forward * Speed;
+        Move();
     }
 
-    private void HandlingLifetime()
+    protected void HandlingLifetime()
     {
         distanceTravelled = Vector3.Distance(startPosition, transform.position);
 
@@ -50,9 +48,27 @@ public class BulletBehaviour : MonoBehaviour
     {
         if (collision.gameObject.TryGetComponent<Target>(out var target))
         {
-            target.TakeDamage(Damage);
-            Destroy(gameObject);
+            HandleCollisionTarget(target);
         }
+        Destroy(gameObject);
+    }
+
+    protected void StartSetup()
+    {
+        rb = GetComponent<Rigidbody>();
+        startPosition = transform.position;
+    }
+
+    protected void Move()
+    {
+        if (StartMove)
+            rb.velocity = transform.forward * Speed;
+    }
+
+    protected virtual void HandleCollisionTarget(Target target)
+    {
+        target.TakeDamage(Damage);
+        Destroy(gameObject);
     }
 
     public void SetupBullet(float speed, float range, int damage)

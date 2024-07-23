@@ -37,6 +37,11 @@ public class PlayerMovement : MonoBehaviour
         {
             avatar.transform.forward = new Vector3(rotateDirection.x, 0, rotateDirection.y);
         }
+
+        if (!characterController.isGrounded)
+        {
+            characterController.Move(Physics.gravity * Time.deltaTime);
+        }
     }
 
     public void Move(InputAction.CallbackContext context)
@@ -59,5 +64,14 @@ public class PlayerMovement : MonoBehaviour
         gameObject.layer = layerToAdd;
         GetComponentInChildren<CinemachineVirtualCamera>().gameObject.layer = layerToAdd;
         GetComponentInChildren<Camera>().cullingMask |= 1 << layerToAdd;
+    }
+
+    public void AddImpact(Vector3 direction, float force)
+    {
+        direction.Normalize();
+        if (direction.y < 0)
+            direction.y = -direction.y;
+        Vector3 impact = direction.normalized * force / 2;
+        characterController.Move(impact);
     }
 }
