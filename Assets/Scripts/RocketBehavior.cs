@@ -8,11 +8,14 @@ public class RocketBehavior : BulletBehaviour
     public int ExplosionDamage { private get; set; } = 20;
     [SerializeField]
     private GameObject explosionEffect;
+    [SerializeField]
+    private ParticleSystem trailEffect;
 
     private bool hasExploded = false;
     void Start()
     {
         StartSetup();
+        trailEffect.Play();
     }
 
     // Update is called once per frame
