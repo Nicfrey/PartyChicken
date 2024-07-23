@@ -23,7 +23,10 @@ public class Target : MonoBehaviour, IDamageable
     public void TakeDamage(int damage)
     {
         if (IsDead())
+        {
+            onDeath?.Invoke();
             return;
+        }
 
         health -= damage;
         onHealthChanged?.Invoke(health);
@@ -45,5 +48,10 @@ public class Target : MonoBehaviour, IDamageable
     public int GetMaxHealth()
     {
         return maxHealth;
+    }
+
+    public int GetHealth()
+    {
+        return health;
     }
 }
