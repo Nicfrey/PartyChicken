@@ -11,6 +11,8 @@ public class RocketBehavior : BulletBehaviour
     private GameObject explosionEffect;
     [SerializeField]
     private ParticleSystem trailEffect;
+    [SerializeField]
+    private float forceImpulse;
 
     private GameObject explosionEffectCreated;
     private bool hasExploded = false;
@@ -57,7 +59,7 @@ public class RocketBehavior : BulletBehaviour
                 {
                     Vector3 direction = (collider.transform.position - transform.position) + new Vector3(0,5,0);
                     direction.Normalize();
-                    playerMovement.AddImpact(direction,30);
+                    playerMovement.AddImpact(direction,forceImpulse);
                 }
                 hasHitPlayer = true;
             }

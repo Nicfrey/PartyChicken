@@ -9779,6 +9779,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   explosionEffect: {fileID: 1804206099813350, guid: 4dd02b5f854b6c84990fbeb810abffe4, type: 3}
   trailEffect: {fileID: 7829381879639098042}
+  forceImpulse: 15
 --- !u!1 &8315236652962956843
 GameObject:
   m_ObjectHideFlags: 0

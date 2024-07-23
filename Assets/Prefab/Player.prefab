@@ -185,7 +185,7 @@ MonoBehaviour:
   actionAsset: {fileID: -944628639613478452, guid: 410eba4dcfdde3c4da62dba850bd2b09, type: 3}
   speed: 5
   avatar: {fileID: 4619901008520734950}
-  gravity: 0.35
+  gravity: 20
 --- !u!114 &3739793576312982818
 MonoBehaviour:
   m_ObjectHideFlags: 0

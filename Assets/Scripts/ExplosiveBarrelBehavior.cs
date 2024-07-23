@@ -15,6 +15,8 @@ public class ExplosiveBarrelBehavior : MonoBehaviour
     private GameObject unexplodedBarrel;
     [SerializeField]
     private ParticleSystem fire;
+    [SerializeField]
+    private float forceImpulse;
 
     private AnimationCurve explosionCurve;
 
@@ -67,7 +69,7 @@ public class ExplosiveBarrelBehavior : MonoBehaviour
                 {
                     Vector3 direction = (collider.transform.position - transform.position) + new Vector3(0, 5, 0);
                     direction.Normalize();
-                    playerMovement.AddImpact(direction, 20);
+                    playerMovement.AddImpact(direction, forceImpulse);
                 }
 
                 hasHitPlayer = true;

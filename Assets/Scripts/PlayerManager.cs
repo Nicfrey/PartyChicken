@@ -27,20 +27,29 @@ public class PlayerManager : MonoBehaviour
 
     private void OnPlayerJoined(PlayerInput obj)
     {
-        DeactivateLobbyCamera(obj);
-
-        if (obj.playerIndex < 0 || obj.playerIndex >= spawnPoints.Count)
-        {
-            Debug.LogError("Player index out of range");
-            return;
-        }
-        obj.GetComponent<PlayerMovement>().SetPlayerPositionAndRotation(spawnPoints[obj.playerIndex].position, spawnPoints[obj.playerIndex].rotation);
-        obj.GetComponent<PlayerMovement>().SetPlayerLayer((int)Mathf.Log(playerLayers[obj.playerIndex].value, 2));
+        StartCoroutine(SetPlayerPositionAfterFrame(obj));
     }
 
     void OnDisable()
     {
         playerInputManager.onPlayerJoined -= OnPlayerJoined;
+    }
+
+    private IEnumerator SetPlayerPositionAfterFrame(PlayerInput obj)
+    {
+        yield return new WaitForEndOfFrame();
+
+        DeactivateLobbyCamera(obj);
+
+        if (obj.playerIndex < 0 || obj.playerIndex >= spawnPoints.Count)
+        {
+            Debug.LogError("Player index out of range");
+            yield break;
+        }
+        Debug.Log("Player joined at index " + obj.playerIndex);
+        Debug.Log("Player spawnpoint " + spawnPoints[obj.playerIndex].position);
+        obj.transform.position = spawnPoints[obj.playerIndex].position;
+        obj.GetComponent<PlayerMovement>().SetPlayerLayer((int)Mathf.Log(playerLayers[obj.playerIndex].value, 2));
     }
 
     private void DeactivateLobbyCamera(PlayerInput obj)

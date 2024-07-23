@@ -1,6 +1,7 @@
 using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Profiling;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -46,10 +47,11 @@ public class PlayerMovement : MonoBehaviour
 
         if (!isGrounded)
         {
-            gravityImpulse.y -= gravity;
+            gravityImpulse.y -= gravity * Time.deltaTime;
             //characterController.Move(Physics.gravity * Time.deltaTime);
         }
         velocity += gravityImpulse;
+        Debug.Log("Velocity Player " + playerIndex + ": " + velocity);
         characterController.Move(velocity * Time.deltaTime);
     }
 
@@ -90,7 +92,7 @@ public class PlayerMovement : MonoBehaviour
     {
         bool previousGrounded = isGrounded;
         isGrounded = Physics.Raycast(transform.position, Vector3.down, 0.1f);
-        if (isGrounded != previousGrounded && isGrounded == true)
+        if (isGrounded != previousGrounded && isGrounded)
         {
             gravityImpulse = Vector3.zero;
         }

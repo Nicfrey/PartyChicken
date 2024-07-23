@@ -77,6 +77,7 @@ MonoBehaviour:
   explodedBarrel: {fileID: 3714774978035248686}
   unexplodedBarrel: {fileID: 5613209811031128425}
   fire: {fileID: 4165431235078537980}
+  forceImpulse: 15
 --- !u!114 &9164427221983590012
 MonoBehaviour:
   m_ObjectHideFlags: 0
