@@ -10,6 +10,9 @@ public class Target : MonoBehaviour, IDamageable
     public delegate void OnHealthChanged(int health);
     public event OnHealthChanged onHealthChanged;
 
+    public delegate void OnRevive();
+    public event OnRevive onRevive;
+
     [SerializeField]
     private int maxHealth = 100;
 
@@ -22,13 +25,12 @@ public class Target : MonoBehaviour, IDamageable
 
     public void TakeDamage(int damage)
     {
+        health -= damage;
         if (IsDead())
         {
             onDeath?.Invoke();
             return;
         }
-
-        health -= damage;
         onHealthChanged?.Invoke(health);
     }
 
@@ -53,5 +55,11 @@ public class Target : MonoBehaviour, IDamageable
     public int GetHealth()
     {
         return health;
+    }
+
+    public void Revive()
+    {
+        health = maxHealth;
+        onRevive?.Invoke();
     }
 }

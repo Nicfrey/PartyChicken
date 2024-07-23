@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerManager : MonoBehaviour
 {
-    [SerializeField] private List<Transform> spawnPoints;
+    private List<SpawnPointBehavior> spawnPoints;
     [SerializeField] private List<LayerMask> playerLayers;
     [SerializeField] private PlayerInputManager playerInputManager;
     [SerializeField] private GameObject lobbyCameraObject;
@@ -13,6 +13,11 @@ public class PlayerManager : MonoBehaviour
     void Awake()
     {
         playerInputManager = GetComponent<PlayerInputManager>();
+    }
+
+    void Start()
+    {
+        spawnPoints = new List<SpawnPointBehavior>(FindObjectsOfType<SpawnPointBehavior>());
     }
 
     void OnEnable()
@@ -47,8 +52,8 @@ public class PlayerManager : MonoBehaviour
             yield break;
         }
         Debug.Log("Player joined at index " + obj.playerIndex);
-        Debug.Log("Player spawnpoint " + spawnPoints[obj.playerIndex].position);
-        obj.transform.position = spawnPoints[obj.playerIndex].position;
+        Debug.Log("Player spawnpoint " + spawnPoints[obj.playerIndex].transform.position);
+        obj.GetComponent<PlayerMovement>().SetPlayerPositionAndRotation(spawnPoints[obj.playerIndex].transform.position,Quaternion.identity);
         obj.GetComponent<PlayerMovement>().SetPlayerLayer((int)Mathf.Log(playerLayers[obj.playerIndex].value, 2));
     }
 

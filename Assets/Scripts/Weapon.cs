@@ -171,13 +171,10 @@ public class Weapon : MonoBehaviour
                 return "Shotgun";
             case WeaponName.AssaultRifle:
                 return "Assault Rifle";
-                break;
             case WeaponName.SniperRifle:
                 return "Sniper Rifle";
-                break;
             case WeaponName.RocketLauncher:
                 return "Rocket Launcher";
-                break;
             default:
                 return "Unknown";
         }

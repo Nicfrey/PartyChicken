@@ -16,31 +16,48 @@ public class PlayerMovement : MonoBehaviour
 
     private bool isGrounded = false;
 
-    [SerializeField] private float gravity;
+    [SerializeField] 
+    private float gravity;
     private Vector3 gravityImpulse;
     private Vector2 move;
     private Vector2 rotateDirection;
+
+    private Target target;
+    private bool canMove = true;
 
     void Start()
     {
         characterController = GetComponent<CharacterController>();
         playerInput = GetComponent<PlayerInput>();
         playerIndex = playerInput.playerIndex;
+        target = GetComponent<Target>();
+        target.onDeath += HandleDeath;
+        target.onRevive += HandleRevive;
+    }
+    private void HandleRevive()
+    {
+        canMove = true;
     }
 
-    // Update is called once per frame
+    private void HandleDeath()
+    {
+        canMove = false;
+    }
+
     void Update()
     {
+        if (!canMove)
+            return;
+
         HandledGrounded();
 
         Vector3 velocity = new Vector3(0,0,0);
-        if (move is not { x: 0, y: 0 } && playerIndex == playerInput.playerIndex)
+        if (move != Vector2.zero && playerIndex == playerInput.playerIndex)
         {
             velocity = new Vector3(move.x, 0, move.y) * speed;
-            // characterController.Move(moveDirection * Time.deltaTime * speed);
         }
 
-        if (rotateDirection is not { x: 0, y: 0 } && playerIndex == playerInput.playerIndex)
+        if (rotateDirection != Vector2.zero && playerIndex == playerInput.playerIndex)
         {
             avatar.transform.forward = new Vector3(rotateDirection.x, 0, rotateDirection.y);
         }
@@ -48,7 +65,6 @@ public class PlayerMovement : MonoBehaviour
         if (!isGrounded)
         {
             gravityImpulse.y -= gravity * Time.deltaTime;
-            //characterController.Move(Physics.gravity * Time.deltaTime);
         }
         velocity += gravityImpulse;
         Debug.Log("Velocity Player " + playerIndex + ": " + velocity);
@@ -79,8 +95,10 @@ public class PlayerMovement : MonoBehaviour
 
     public void SetPlayerPositionAndRotation(Vector3 position, Quaternion rotation)
     {
+        characterController.enabled = false;
         transform.position = position;
         transform.rotation = rotation;
+        characterController.enabled = true;
     }
 
     public void AddImpact(Vector3 direction, float force)
@@ -106,5 +124,10 @@ public class PlayerMovement : MonoBehaviour
             Gizmos.DrawSphere(hit.point,0.05f);
             Gizmos.DrawRay(transform.position, Vector3.down * 0.1f);
         }
+    }
+
+    void OnDisable()
+    {
+        target.onDeath -= HandleDeath;
     }
 }
