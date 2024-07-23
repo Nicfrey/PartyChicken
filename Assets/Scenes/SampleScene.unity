@@ -618,8 +618,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weaponPrefabs:
-  - {fileID: 3899599177412693230, guid: f81479ba096cbfb4d8999bd0c5f92f7f, type: 3}
-  - {fileID: 9059324118345117893, guid: e22e2fca881a1054bb3ab6b86bea9452, type: 3}
   - {fileID: 2162489556765299910, guid: 3c8a84c7ed456d94593bcd38438c6da4, type: 3}
   minSpawnRate: 5
   maxSpawnRate: 10

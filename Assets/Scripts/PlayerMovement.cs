@@ -13,7 +13,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float speed = 5f;
     [SerializeField] private GameObject avatar;
 
+    private bool isGrounded = false;
 
+    [SerializeField] private float gravity;
+    private Vector3 gravityImpulse;
     private Vector2 move;
     private Vector2 rotateDirection;
 
@@ -27,10 +30,13 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        HandledGrounded();
+
+        Vector3 velocity = new Vector3(0,0,0);
         if (move is not { x: 0, y: 0 } && playerIndex == playerInput.playerIndex)
         {
-            Vector3 moveDirection = new Vector3(move.x, 0, move.y);
-            characterController.Move(moveDirection * Time.deltaTime * speed);
+            velocity = new Vector3(move.x, 0, move.y) * speed;
+            // characterController.Move(moveDirection * Time.deltaTime * speed);
         }
 
         if (rotateDirection is not { x: 0, y: 0 } && playerIndex == playerInput.playerIndex)
@@ -38,10 +44,13 @@ public class PlayerMovement : MonoBehaviour
             avatar.transform.forward = new Vector3(rotateDirection.x, 0, rotateDirection.y);
         }
 
-        if (!characterController.isGrounded)
+        if (!isGrounded)
         {
-            characterController.Move(Physics.gravity * Time.deltaTime);
+            gravityImpulse.y -= gravity;
+            //characterController.Move(Physics.gravity * Time.deltaTime);
         }
+        velocity += gravityImpulse;
+        characterController.Move(velocity * Time.deltaTime);
     }
 
     public void Move(InputAction.CallbackContext context)
@@ -66,12 +75,34 @@ public class PlayerMovement : MonoBehaviour
         GetComponentInChildren<Camera>().cullingMask |= 1 << layerToAdd;
     }
 
+    public void SetPlayerPositionAndRotation(Vector3 position, Quaternion rotation)
+    {
+        transform.position = position;
+        transform.rotation = rotation;
+    }
+
     public void AddImpact(Vector3 direction, float force)
     {
-        direction.Normalize();
-        if (direction.y < 0)
-            direction.y = -direction.y;
-        Vector3 impact = direction.normalized * force / 2;
-        characterController.Move(impact);
+        gravityImpulse = direction.normalized * force;
+    }
+
+    private void HandledGrounded()
+    {
+        bool previousGrounded = isGrounded;
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, 0.1f);
+        if (isGrounded != previousGrounded && isGrounded == true)
+        {
+            gravityImpulse = Vector3.zero;
+        }
+    }
+
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        if (Physics.Raycast(transform.position, Vector3.down, out var hit, characterController.height / 2 + 0.1f))
+        {
+            Gizmos.DrawSphere(hit.point,0.05f);
+            Gizmos.DrawRay(transform.position, Vector3.down * 0.1f);
+        }
     }
 }

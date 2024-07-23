@@ -34,8 +34,7 @@ public class PlayerManager : MonoBehaviour
             Debug.LogError("Player index out of range");
             return;
         }
-        obj.transform.position = spawnPoints[obj.playerIndex].position;
-        obj.transform.rotation = spawnPoints[obj.playerIndex].rotation;
+        obj.GetComponent<PlayerMovement>().SetPlayerPositionAndRotation(spawnPoints[obj.playerIndex].position, spawnPoints[obj.playerIndex].rotation);
         obj.GetComponent<PlayerMovement>().SetPlayerLayer((int)Mathf.Log(playerLayers[obj.playerIndex].value, 2));
     }
 

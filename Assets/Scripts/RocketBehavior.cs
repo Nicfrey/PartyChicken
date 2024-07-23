@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class RocketBehavior : BulletBehaviour
 {
@@ -11,6 +12,7 @@ public class RocketBehavior : BulletBehaviour
     [SerializeField]
     private ParticleSystem trailEffect;
 
+    private GameObject explosionEffectCreated;
     private bool hasExploded = false;
     void Start()
     {
@@ -43,15 +45,26 @@ public class RocketBehavior : BulletBehaviour
     private void Explode()
     {
         hasExploded = true;
-        Instantiate(explosionEffect,transform.position,transform.rotation);
         Collider[] colliders = Physics.OverlapSphere(transform.position, ExplosionRadius);
+        bool hasHitPlayer = false;
 
         foreach (var collider in colliders)
         {
             if (collider.TryGetComponent<Target>(out var target))
             {
                 target.TakeDamage(ExplosionDamage);
+                if (collider.TryGetComponent<PlayerMovement>(out var playerMovement))
+                {
+                    Vector3 direction = (collider.transform.position - transform.position) + new Vector3(0,5,0);
+                    direction.Normalize();
+                    playerMovement.AddImpact(direction,30);
+                }
+                hasHitPlayer = true;
             }
         }
+
+        GameObject effect = Instantiate(explosionEffect, transform.position,
+            hasHitPlayer ? Quaternion.identity : Quaternion.Inverse(transform.rotation));
+        Destroy(effect,5f);
     }
 }
