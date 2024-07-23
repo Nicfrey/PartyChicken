@@ -72,7 +72,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explosionEffect: {fileID: 1804206099813350, guid: 4dd02b5f854b6c84990fbeb810abffe4, type: 3}
-  explosionRadius: 5
+  explosionRadius: 3.5
   explosionDamage: 80
   explodedBarrel: {fileID: 3714774978035248686}
   unexplodedBarrel: {fileID: 5613209811031128425}
