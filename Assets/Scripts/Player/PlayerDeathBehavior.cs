@@ -21,7 +21,7 @@ public class PlayerDeathBehavior : MonoBehaviour
     {
         respawnTimerUI.SetActive(false);
         target = GetComponent<Target>();
-        target.onDeath += HandleDeath;
+        target.onDeath.AddListener(HandleDeath);
     }
 
     private void HandleDeath()
@@ -61,6 +61,8 @@ public class PlayerDeathBehavior : MonoBehaviour
                 spawnPoints[randomIndex].GetComponent<SpawnPointBehavior>().SetUnavailable();
                 foundSpawnPoint = true;
             }
+
+            yield return null;
         }
         target.Revive();
     }

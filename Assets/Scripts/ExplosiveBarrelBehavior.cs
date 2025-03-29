@@ -35,8 +35,8 @@ public class ExplosiveBarrelBehavior : MonoBehaviour
     void Start()
     {
         target = GetComponent<Target>();
-        target.onDeath += Explode;
-        target.onHealthChanged += ActivateFire;
+        target.onDeath.AddListener(Explode);
+        target.onHealthChanged.AddListener(ActivateFire);
     }
 
     private void ActivateFire(int health)
@@ -44,13 +44,13 @@ public class ExplosiveBarrelBehavior : MonoBehaviour
         if (target.GetHealth() <= target.GetMaxHealth() / 2)
         {
             fire.Play();
-            target.onHealthChanged -= ActivateFire;
+            target.onHealthChanged.RemoveListener(ActivateFire);
         }
     }
 
     private void Explode()
     {
-        target.onDeath -= Explode;
+        target.onDeath.RemoveListener(Explode);
         Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius);
         bool hasHitPlayer = false;
 
@@ -86,8 +86,8 @@ public class ExplosiveBarrelBehavior : MonoBehaviour
 
     void OnDestroy()
     {
-        target.onDeath -= Explode;
-        target.onHealthChanged -= ActivateFire;
+        target.onDeath.RemoveListener(Explode);
+        target.onHealthChanged.RemoveListener(ActivateFire);
     }
 
     void OnDrawGizmos()

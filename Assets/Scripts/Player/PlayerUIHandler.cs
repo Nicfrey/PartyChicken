@@ -27,10 +27,10 @@ public class PlayerUIHandler : MonoBehaviour
         weaponHolder = GetComponent<PlayerWeaponHandling>();
         target = GetComponent<Target>();
         weaponUI.SetActive(false);
-        weaponHolder.onWeaponChange += UpdateWeaponUI;
-        weaponHolder.onWeaponThrow += UpdateWeaponUI;
-        weaponHolder.onWeaponShoot += UpdateWeaponUI;
-        target.onHealthChanged += UpdateHealthUI;
+        weaponHolder.onWeaponChange.AddListener(UpdateWeaponUI);
+        weaponHolder.onWeaponThrow.AddListener(UpdateWeaponUI);
+        weaponHolder.onWeaponShoot.AddListener(UpdateWeaponUI);
+        target.onHealthChanged.AddListener(UpdateHealthUI);
     }
 
     public void SetTarget(Target newTarget)
@@ -59,10 +59,10 @@ public class PlayerUIHandler : MonoBehaviour
 
     void OnDestroy()
     {
-        weaponHolder.onWeaponChange -= UpdateWeaponUI;
-        weaponHolder.onWeaponThrow -= UpdateWeaponUI;
-        weaponHolder.onWeaponShoot -= UpdateWeaponUI;
-        target.onHealthChanged -= UpdateHealthUI;
+        weaponHolder.onWeaponChange.RemoveListener(UpdateWeaponUI);
+        weaponHolder.onWeaponThrow.RemoveListener(UpdateWeaponUI);
+        weaponHolder.onWeaponShoot.RemoveListener(UpdateWeaponUI);
+        target.onHealthChanged.RemoveListener(UpdateHealthUI);
     }
 
     private void UpdateHealthUI(int health)

@@ -9,8 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3555599639607179227}
-  - component: {fileID: 8430016359261856774}
   - component: {fileID: 3755850028061447975}
+  - component: {fileID: 2207195107510207445}
   - component: {fileID: 9105027960885957976}
   - component: {fileID: 3863758884449097945}
   - component: {fileID: 3739793576312982818}
@@ -43,32 +43,6 @@ Transform:
   - {fileID: 8059718275717336494}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!143 &8430016359261856774
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 179308493097817260}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Height: 2
-  m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1, z: 0}
 --- !u!136 &3755850028061447975
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -86,12 +60,39 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!54 &2207195107510207445
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 179308493097817260}
+  serializedVersion: 4
+  m_Mass: 1
+  m_Drag: 5
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 1
+  m_Constraints: 112
+  m_CollisionDetection: 1
 --- !u!114 &9105027960885957976
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -183,10 +184,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerIndex: 0
-  actionAsset: {fileID: -944628639613478452, guid: 410eba4dcfdde3c4da62dba850bd2b09, type: 3}
   speed: 5
+  slope: 40
   avatar: {fileID: 4619901008520734950}
-  gravity: 20
+  actionAsset: {fileID: -944628639613478452, guid: 410eba4dcfdde3c4da62dba850bd2b09, type: 3}
 --- !u!114 &3739793576312982818
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,6 +200,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 734763dfd601d3746948e2ab0e326891, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onWeaponChange:
+    m_PersistentCalls:
+      m_Calls: []
+  onWeaponThrow:
+    m_PersistentCalls:
+      m_Calls: []
+  onWeaponShoot:
+    m_PersistentCalls:
+      m_Calls: []
   weaponHolder: {fileID: 489295143728830087}
 --- !u!114 &44793080572249946
 MonoBehaviour:
@@ -212,6 +222,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9620f8a69d6b7c946bb3b4d56daedb41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  onDeath:
+    m_PersistentCalls:
+      m_Calls: []
+  onHealthChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  onRevive:
+    m_PersistentCalls:
+      m_Calls: []
   maxHealth: 100
 --- !u!114 &1571983250654153742
 MonoBehaviour:
@@ -1111,7 +1130,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2254546818434079359}
-  - component: {fileID: 2099101212704301166}
   m_Layer: 0
   m_Name: Avatar
   m_TagString: Untagged
@@ -1137,32 +1155,6 @@ Transform:
   - {fileID: 489295143728830087}
   m_Father: {fileID: 3555599639607179227}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!143 &2099101212704301166
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4619901008520734950}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Height: 2
-  m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1, z: 0}
 --- !u!1 &5132004704604725985
 GameObject:
   m_ObjectHideFlags: 0

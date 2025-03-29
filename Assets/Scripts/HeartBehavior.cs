@@ -42,7 +42,10 @@ public class HeartBehavior : MonoBehaviour
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.TryGetComponent<Target>(out var target) && other.GetComponent<CharacterController>() != null)
+        if(heartTaken)
+            return;
+        
+        if (other.TryGetComponent<Target>(out var target))
         {
             target.AddHealth(heal);
             heartMesh.SetActive(false);

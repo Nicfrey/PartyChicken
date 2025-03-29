@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class PlayerManager : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
     private List<SpawnPointBehavior> spawnPoints;
     [SerializeField] private List<LayerMask> playerLayers;
@@ -20,26 +20,16 @@ public class PlayerManager : MonoBehaviour
         spawnPoints = new List<SpawnPointBehavior>(FindObjectsOfType<SpawnPointBehavior>());
     }
 
-    void OnEnable()
-    {
-        playerInputManager.onPlayerJoined += OnPlayerJoined;
-    }
-
     void Update()
     {
         Rotate();
     }
 
-    private void OnPlayerJoined(PlayerInput obj)
+    public void OnPlayerJoined(PlayerInput obj)
     {
         StartCoroutine(SetPlayerPositionAfterFrame(obj));
     }
-
-    void OnDisable()
-    {
-        playerInputManager.onPlayerJoined -= OnPlayerJoined;
-    }
-
+    
     private IEnumerator SetPlayerPositionAfterFrame(PlayerInput obj)
     {
         yield return new WaitForEndOfFrame();

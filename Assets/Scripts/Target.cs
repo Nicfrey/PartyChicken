@@ -1,17 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Target : MonoBehaviour, IDamageable
 {
-    public delegate void OnDeath();
-    public event OnDeath onDeath;
-
-    public delegate void OnHealthChanged(int health);
-    public event OnHealthChanged onHealthChanged;
-
-    public delegate void OnRevive();
-    public event OnRevive onRevive;
+    public UnityEvent onDeath;
+    public UnityEvent<int> onHealthChanged;
+    public UnityEvent onRevive;
 
     [SerializeField]
     private int maxHealth = 100;

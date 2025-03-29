@@ -133,7 +133,6 @@ public class Weapon : MonoBehaviour
     {
         if (canShoot)
         {
-            Debug.Log("Shoot");
             currentAmmunition--;
             muzzleFlash.Play();
             GameObject bullet = Instantiate(bulletPrefab, bulletSpawnPoint);

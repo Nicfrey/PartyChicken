@@ -1,18 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class PlayerWeaponHandling : MonoBehaviour
 {
-    public delegate void OnWeaponChange(Weapon weapon);
-    public event OnWeaponChange onWeaponChange;
+    public UnityEvent<Weapon> onWeaponChange;
+    
+    public UnityEvent<Weapon> onWeaponThrow;
 
-    public delegate void OnWeaponThrow(Weapon weapon);
-    public event OnWeaponThrow onWeaponThrow;
-
-    public delegate void OnWeaponShoot(Weapon weapon);
-    public event OnWeaponShoot onWeaponShoot;
+    public UnityEvent<Weapon> onWeaponShoot;
 
     [SerializeField]
     private Transform weaponHolder;
