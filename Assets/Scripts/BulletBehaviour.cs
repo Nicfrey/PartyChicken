@@ -10,6 +10,10 @@ public class BulletBehaviour : MonoBehaviour
     private Vector3 startPosition;
     public bool StartMove { private get; set; } = false;
     public int Damage { private get; set; } = 10;
+    [SerializeField]
+    private GameObject bloodPrefab;
+    [SerializeField]
+    private GameObject wallPrefab;
 
     private Rigidbody rb;
 
@@ -46,11 +50,19 @@ public class BulletBehaviour : MonoBehaviour
 
     void OnCollisionEnter(Collision collision)
     {
+        
         if (collision.gameObject.TryGetComponent<Target>(out var target))
         {
             HandleCollisionTarget(target);
+            GameObject blood = Instantiate(bloodPrefab, transform.position, Quaternion.identity);
+            Destroy(blood, blood.GetComponent<ParticleSystem>().main.duration);
         }
-        Destroy(gameObject);
+        else
+        {
+            GameObject wall = Instantiate(wallPrefab, transform.position, Quaternion.identity);
+            Destroy(wall, wall.GetComponent<ParticleSystem>().main.duration);
+            Destroy(gameObject);
+        }
     }
 
     protected void StartSetup()

@@ -51,10 +51,11 @@ MonoBehaviour:
   range: 20
   fireMode: 1
   fireRate: 0.4
-  muzzleFlash: {fileID: 5452825855391692125}
+  muzzleFlash: {fileID: 198316573430509862, guid: c0507a544f1ee7e4caa7785ef90ff92a, type: 3}
   bulletPrefab: {fileID: 8599029945474656996, guid: c6d13e91ac4d62c45a5680d7e7873c57, type: 3}
   bulletSpawnPoint: {fileID: 3912487043117483104}
   bulletSpeed: 15
+  weaponName: 0
 --- !u!1001 &3496221008629640403
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -115,11 +116,6 @@ PrefabInstance:
 --- !u!4 &3912487043117483104 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 490576006100723891, guid: 908a61e320601a9439b483152254a058, type: 3}
-  m_PrefabInstance: {fileID: 3496221008629640403}
-  m_PrefabAsset: {fileID: 0}
---- !u!198 &5452825855391692125 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 8874701791855335822, guid: 908a61e320601a9439b483152254a058, type: 3}
   m_PrefabInstance: {fileID: 3496221008629640403}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &4664267609451992889
