@@ -54,7 +54,7 @@ public class RocketBehavior : BulletBehaviour
         {
             if (collider.TryGetComponent<Target>(out var target))
             {
-                target.TakeDamage(ExplosionDamage);
+                target.TakeDamage(ExplosionDamage,owner);
                 if (collider.TryGetComponent<PlayerMovement>(out var playerMovement))
                 {
                     Vector3 direction = (collider.transform.position - transform.position) + new Vector3(0,5,0);

@@ -35,11 +35,12 @@ public class PlayerWeaponHandling : MonoBehaviour
         {
             currentWeapon.Throw(transform.forward,transform.position);
             onWeaponThrow?.Invoke(currentWeapon);
-            Destroy(currentWeapon.gameObject);
+            Destroy(currentWeapon.gameObject,5f);
         }
         GameObject newWeapon = Instantiate(weapon, weaponHolder);
         newWeapon.transform.SetParent(weaponHolder.transform);
         currentWeapon = newWeapon.GetComponent<Weapon>();
+        currentWeapon.SetOwner(GetComponent<PlayerStatistics>());
         onWeaponChange?.Invoke(currentWeapon);
     }
 

@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 public class Target : MonoBehaviour, IDamageable
 {
-    public UnityEvent onDeath;
+    public UnityEvent<PlayerStatistics> onDeath;
     public UnityEvent<int> onHealthChanged;
     public UnityEvent onRevive;
 
@@ -19,12 +19,15 @@ public class Target : MonoBehaviour, IDamageable
         health = maxHealth;
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, PlayerStatistics shootingPlayer)
     {
+        if (IsDead())
+            return;
+        
         health -= damage;
         if (IsDead())
         {
-            onDeath?.Invoke();
+            onDeath?.Invoke(shootingPlayer);
             return;
         }
         onHealthChanged?.Invoke(health);

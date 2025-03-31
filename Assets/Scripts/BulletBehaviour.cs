@@ -15,6 +15,8 @@ public class BulletBehaviour : MonoBehaviour
     [SerializeField]
     private GameObject wallPrefab;
 
+    protected PlayerStatistics owner;
+
     private Rigidbody rb;
 
     void Start()
@@ -79,14 +81,15 @@ public class BulletBehaviour : MonoBehaviour
 
     protected virtual void HandleCollisionTarget(Target target)
     {
-        target.TakeDamage(Damage);
+        target.TakeDamage(Damage,owner);
         Destroy(gameObject);
     }
 
-    public void SetupBullet(float speed, float range, int damage)
+    public void SetupBullet(float speed, float range, int damage, PlayerStatistics owner)
     {
         Speed = speed;
         Range = range;
         Damage = damage;
+        this.owner = owner;
     }
 }

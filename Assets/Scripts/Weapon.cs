@@ -45,6 +45,7 @@ public class Weapon : MonoBehaviour
     private int currentAmmunition;
     protected bool canShoot = true;
     private float timerFire;
+    private PlayerStatistics owner;
 
     void Awake()
     {
@@ -140,7 +141,7 @@ public class Weapon : MonoBehaviour
             BulletBehaviour bulletBehaviour = bullet.GetComponent<BulletBehaviour>();
             bulletBehaviour.SetDirection(bulletSpawnPoint.forward);
             bulletBehaviour.StartMove = true;
-            bulletBehaviour.SetupBullet(bulletSpeed, range, damage);
+            bulletBehaviour.SetupBullet(bulletSpeed, range, damage, owner);
             canShoot = false;
         }
     }
@@ -177,5 +178,10 @@ public class Weapon : MonoBehaviour
             default:
                 return "Unknown";
         }
+    }
+
+    public void SetOwner(PlayerStatistics owner)
+    {
+        this.owner = owner;
     }
 }

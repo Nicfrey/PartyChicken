@@ -48,7 +48,7 @@ public class ExplosiveBarrelBehavior : MonoBehaviour
         }
     }
 
-    private void Explode()
+    private void Explode(PlayerStatistics shootingPlayer)
     {
         target.onDeath.RemoveListener(Explode);
         Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius);
@@ -64,7 +64,7 @@ public class ExplosiveBarrelBehavior : MonoBehaviour
                 }
 
                 float distance = Vector3.Distance(transform.position, target.transform.position);
-                target.TakeDamage((int) explosionCurve.Evaluate(distance));
+                target.TakeDamage((int) explosionCurve.Evaluate(distance),shootingPlayer);
                 if (collider.TryGetComponent<PlayerMovement>(out var playerMovement))
                 {
                     Vector3 direction = (collider.transform.position - transform.position) + new Vector3(0, 5, 0);

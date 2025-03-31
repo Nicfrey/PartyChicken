@@ -24,7 +24,7 @@ public class PlayerDeathBehavior : MonoBehaviour
         target.onDeath.AddListener(HandleDeath);
     }
 
-    private void HandleDeath()
+    private void HandleDeath(PlayerStatistics shootingPlayer)
     {
         if (!isRespawning)
         {

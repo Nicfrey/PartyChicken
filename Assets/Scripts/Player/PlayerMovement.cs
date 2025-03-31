@@ -48,7 +48,7 @@ public class PlayerMovement : MonoBehaviour
         canMove = true;
     }
 
-    private void HandleDeath()
+    private void HandleDeath(PlayerStatistics shootingPlayer)
     {
         canMove = false;
     }
@@ -57,8 +57,6 @@ public class PlayerMovement : MonoBehaviour
     {
         if (!canMove)
             return;
-
-        rb.useGravity = !OnSlope();
         
         Vector3 desiredVelocity = Vector3.zero;
         if (move != Vector2.zero && playerIndex == playerInput.playerIndex)
@@ -66,9 +64,13 @@ public class PlayerMovement : MonoBehaviour
             desiredVelocity = new Vector3(move.x, 0, move.y) * speed;
         }
         
-        if (!IsGrounded())
+        if (!IsGrounded() && !OnSlope())
         {
-            rb.AddForce(desiredVelocity * (10f * 0.4f) , ForceMode.Force);
+            rb.AddForce(desiredVelocity, ForceMode.Force);
+        }
+        else if (OnSlope())
+        {
+            rb.AddForce(GetSlopeMoveDirection(desiredVelocity.normalized) * (speed * 5f), ForceMode.Force);
         }
         else
         {
