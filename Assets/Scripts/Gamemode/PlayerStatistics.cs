@@ -25,7 +25,7 @@ public class PlayerStatistics : MonoBehaviour
     private void AddDeath(PlayerStatistics playerShooting)
     {
         Deaths++;
-        playerShooting.AddKill();
+        playerShooting?.AddKill();
     }
 
     public void ResetStats()
