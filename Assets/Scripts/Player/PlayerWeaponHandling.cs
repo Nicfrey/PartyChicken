@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Animations.Rigging;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -15,11 +17,18 @@ public class PlayerWeaponHandling : MonoBehaviour
     public UnityEvent<Weapon> onWeaponShoot;
 
     [SerializeField] private Transform weaponHolder;
+    private TwoBoneIKConstraint twoBoneIKConstraint;
     private Weapon currentWeapon = null;
     private bool isShooting = false;
 
+    private void Start()
+    {
+        twoBoneIKConstraint = weaponHolder.GetComponent<TwoBoneIKConstraint>();
+    }
+
     void Update()
     {
+        twoBoneIKConstraint.weight = HasWeapon() ? 1f : 0f;
         if (HasWeapon())
         {
             if (isShooting)

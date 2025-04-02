@@ -22,6 +22,8 @@ public class PlayerMovement : MonoBehaviour
     private GameObject avatar;
     [SerializeField] 
     private InputActionAsset actionAsset;
+    [SerializeField] 
+    private Animator animator;
     
     private PlayerInput playerInput;
     private Rigidbody rb;
@@ -70,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else if (OnSlope())
         {
-            rb.AddForce(GetSlopeMoveDirection(desiredVelocity.normalized) * (speed * 5f), ForceMode.Force);
+            rb.AddForce(GetSlopeMoveDirection(desiredVelocity.normalized) * (speed * 10f), ForceMode.Force);
         }
         else
         {
@@ -90,6 +92,7 @@ public class PlayerMovement : MonoBehaviour
         {
             avatar.transform.forward = new Vector3(rotateDirection.x, 0, rotateDirection.y);
         }
+        HandleAnimation();
     }
 
     public void Move(InputAction.CallbackContext context)
@@ -111,8 +114,10 @@ public class PlayerMovement : MonoBehaviour
 
     public void SetPlayerPositionAndRotation(Vector3 position, Quaternion rotation)
     {
+        rb.isKinematic = true;
         transform.position = position;
         transform.rotation = rotation;
+        rb.isKinematic = false;
     }
     
     void OnDisable()
@@ -148,6 +153,32 @@ public class PlayerMovement : MonoBehaviour
     private bool IsGrounded()
     {
         Collider[] colliders = Physics.OverlapSphere(transform.position, 0.05f);
-        return colliders.Where(collider => collider.gameObject != gameObject).ToList().Count > 0;
+        foreach (Collider collider in colliders)
+        {
+            if (collider.gameObject != gameObject)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = IsGrounded() ? Color.black : Color.red;
+        Gizmos.DrawWireSphere(transform.position, 0.05f);
+    }
+
+    private void HandleAnimation()
+    {
+        Vector3 currentVelocity = rb.velocity;
+        currentVelocity.y = 0f;
+        animator.SetFloat("Speed", currentVelocity.magnitude);
+        animator.SetBool("IsGrounded", IsGrounded());
+        Vector3 velocityWithAvatarRotation = avatar.transform.InverseTransformDirection(currentVelocity);
+        Debug.Log(velocityWithAvatarRotation);
+        animator.SetFloat("Right",velocityWithAvatarRotation.x);
+        animator.SetFloat("Forward", velocityWithAvatarRotation.z);
     }
 }
