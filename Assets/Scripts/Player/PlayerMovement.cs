@@ -114,10 +114,8 @@ public class PlayerMovement : MonoBehaviour
 
     public void SetPlayerPositionAndRotation(Vector3 position, Quaternion rotation)
     {
-        rb.isKinematic = true;
-        transform.position = position;
-        transform.rotation = rotation;
-        rb.isKinematic = false;
+        rb.MovePosition(position);
+        rb.MoveRotation(rotation);
     }
     
     void OnDisable()

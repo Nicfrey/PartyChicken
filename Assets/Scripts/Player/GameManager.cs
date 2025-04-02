@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour
     
     private IEnumerator SetPlayerPositionAfterFrame(PlayerInput obj)
     {
-        yield return new WaitForEndOfFrame();
+        yield return null;
 
         DeactivateLobbyCamera(obj);
 
@@ -80,9 +80,11 @@ public class GameManager : MonoBehaviour
             Debug.LogError("Player index out of range");
             yield break;
         }
-        yield return new WaitForEndOfFrame();
+
+        yield return null;
         obj.GetComponent<PlayerMovement>().SetPlayerPositionAndRotation(spawnPoints[obj.playerIndex].transform.position,Quaternion.identity);
         obj.GetComponent<PlayerMovement>().SetPlayerLayer((int)Mathf.Log(playerLayers[obj.playerIndex].value, 2));
+        obj.GetComponent<PlayerSkinSelection>().SelectSkin(obj.playerIndex);
     }
 
     private void DeactivateLobbyCamera(PlayerInput obj)

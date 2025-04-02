@@ -60,5 +60,6 @@ public class Target : MonoBehaviour, IDamageable
     {
         health = maxHealth;
         onRevive?.Invoke();
+        onHealthChanged?.Invoke(health);
     }
 }

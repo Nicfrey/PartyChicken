@@ -48,7 +48,7 @@ public class PlayerDeathBehavior : MonoBehaviour
 
     private IEnumerator RespawnPlayer()
     {
-        yield return new WaitForEndOfFrame();
+        yield return null;
         
         SpawnPointBehavior[] spawnPoints = FindObjectsOfType<SpawnPointBehavior>();
         bool foundSpawnPoint = false;
