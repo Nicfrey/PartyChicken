@@ -211,6 +211,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3608283163246173639}
   - component: {fileID: 782406965709899610}
+  - component: {fileID: 6275210791808669217}
   m_Layer: 0
   m_Name: RocketLauncher
   m_TagString: Untagged
@@ -258,6 +259,27 @@ MonoBehaviour:
   bulletSpeed: 20
   weaponName: 4
   fakeRocketObject: {fileID: 478382757662962315}
+--- !u!65 &6275210791808669217
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2162489556765299910}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 0.8742525, z: 3.3987749}
+  m_Center: {x: 0, y: 0.06287375, z: -1.1617044}
 --- !u!1001 &7657741013803583611
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3079252955121030648}
   - component: {fileID: 4832505752927749578}
+  - component: {fileID: 5977560461272659458}
   m_Layer: 0
   m_Name: AssaultRifle
   m_TagString: Untagged
@@ -55,6 +56,28 @@ MonoBehaviour:
   bulletPrefab: {fileID: 8599029945474656996, guid: c6d13e91ac4d62c45a5680d7e7873c57, type: 3}
   bulletSpawnPoint: {fileID: 6567007428122740988}
   bulletSpeed: 15
+  weaponName: 0
+--- !u!65 &5977560461272659458
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3899599177412693230}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.047737285, y: 0.33797735, z: 1.0381086}
+  m_Center: {x: 0.0010092445, y: -0.0026811957, z: 0.20390639}
 --- !u!1001 &6767874710914801743
 PrefabInstance:
   m_ObjectHideFlags: 0

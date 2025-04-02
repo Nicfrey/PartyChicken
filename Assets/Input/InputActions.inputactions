@@ -27,7 +27,16 @@
                     "name": "Shoot",
                     "type": "Button",
                     "id": "e80f6f63-949a-4863-91bd-0bca7212cec1",
-                    "expectedControlType": "Button",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Throw",
+                    "type": "Button",
+                    "id": "eb9e34f0-7743-427f-80b9-52d8e6b9ab34",
+                    "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
@@ -64,6 +73,17 @@
                     "processors": "",
                     "groups": "ControlScheme",
                     "action": "Shoot",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "275d1545-0b17-4b6d-a9f7-3232a91de7ff",
+                    "path": "<Gamepad>/rightShoulder",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Throw",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

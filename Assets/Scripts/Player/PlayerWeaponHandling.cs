@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -7,13 +8,12 @@ using UnityEngine.InputSystem;
 public class PlayerWeaponHandling : MonoBehaviour
 {
     public UnityEvent<Weapon> onWeaponChange;
-    
+
     public UnityEvent<Weapon> onWeaponThrow;
 
     public UnityEvent<Weapon> onWeaponShoot;
 
-    [SerializeField]
-    private Transform weaponHolder;
+    [SerializeField] private Transform weaponHolder;
     private Weapon currentWeapon = null;
     private bool isShooting = false;
 
@@ -31,12 +31,7 @@ public class PlayerWeaponHandling : MonoBehaviour
 
     public void EquipWeapon(GameObject weapon)
     {
-        if (HasWeapon())
-        {
-            currentWeapon.Throw(transform.forward,transform.position);
-            onWeaponThrow?.Invoke(currentWeapon);
-            Destroy(currentWeapon.gameObject,5f);
-        }
+        Throw();
         GameObject newWeapon = Instantiate(weapon, weaponHolder);
         newWeapon.transform.SetParent(weaponHolder.transform);
         currentWeapon = newWeapon.GetComponent<Weapon>();
@@ -54,13 +49,22 @@ public class PlayerWeaponHandling : MonoBehaviour
         }
     }
 
-    public void Throw()
+    public void ThrowInput(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            Throw();
+        } 
+    }
+
+    private void Throw()
     {
         if (HasWeapon())
         {
-            currentWeapon.Throw(transform.forward, transform.position);
+            currentWeapon.Throw(weaponHolder.forward, weaponHolder.position);
             onWeaponThrow?.Invoke(currentWeapon);
-            Destroy(currentWeapon.gameObject);
+            Destroy(currentWeapon.gameObject, 5f);
+            currentWeapon = null;
         }
     }
 

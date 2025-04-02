@@ -44,6 +44,7 @@ public class Weapon : MonoBehaviour
 
     private int currentAmmunition;
     protected bool canShoot = true;
+    private bool isThrown = false;
     private float timerFire;
     private PlayerStatistics owner;
 
@@ -95,7 +96,13 @@ public class Weapon : MonoBehaviour
 
     public virtual void Throw(Vector3 direction, Vector3 origin)
     {
-
+        transform.SetParent(null,true);
+        transform.position = origin;
+        BoxCollider boxCollider = gameObject.GetComponent<BoxCollider>();
+        boxCollider.isTrigger = false;
+        Rigidbody physics = gameObject.AddComponent<Rigidbody>();
+        physics.AddForce(direction * bulletSpeed, ForceMode.Impulse);
+        isThrown = true;
     }
 
     protected virtual void ShootAutomatic(Vector3 direction, Vector3 origin)
@@ -117,7 +124,6 @@ public class Weapon : MonoBehaviour
     private void CommonTask()
     {
         ShootBehavior();
-        // TODO fake recoil effect
     }
 
     private bool HasNoAmmunition()
@@ -183,5 +189,14 @@ public class Weapon : MonoBehaviour
     public void SetOwner(PlayerStatistics owner)
     {
         this.owner = owner;
+    }
+
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.TryGetComponent(out Target target))
+        {
+            int damage = (int)Mathf.Clamp(GetComponent<Rigidbody>().velocity.magnitude, 0f, 10f);
+            target.TakeDamage(damage,owner);
+        }
     }
 }
