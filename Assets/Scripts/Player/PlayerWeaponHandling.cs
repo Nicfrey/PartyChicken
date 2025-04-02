@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class PlayerWeaponHandling : MonoBehaviour
 {
@@ -41,6 +42,9 @@ public class PlayerWeaponHandling : MonoBehaviour
 
     public void Shoot(InputAction.CallbackContext context)
     {
+        if (!enabled)
+            return;
+        
         if (HasWeapon())
         {
             isShooting = context.ReadValueAsButton();
@@ -51,6 +55,9 @@ public class PlayerWeaponHandling : MonoBehaviour
 
     public void ThrowInput(InputAction.CallbackContext context)
     {
+        if (!enabled)
+            return;
+        
         if (context.performed)
         {
             Throw();

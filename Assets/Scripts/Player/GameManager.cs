@@ -17,9 +17,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<LayerMask> playerLayers;
     [SerializeField] private PlayerInputManager playerInputManager;
     [SerializeField] private GameObject lobbyCameraObject;
+    
+    [Header("GameMode Settings")]
     [SerializeField] private GameMode gameMode;
+    [SerializeField] [Range(1f,300f)] private float gameModeDuration;
+    [SerializeField] [Range(1,30)] private int gameModeScore;
     
     private GameModeBase currentGameMode;
+    public GameModeBase CurrentGameMode => currentGameMode;
+
     void Awake()
     {
         if (Instance == null)
@@ -49,13 +55,17 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        currentGameMode.CheckEndGame();
+        currentGameMode.Update();
         Rotate();
     }
 
     public void OnPlayerJoined(PlayerInput obj)
     {
         currentGameMode.AddPlayerStatistic(obj);
+        if (obj.playerIndex == 1)
+        {
+            currentGameMode.StartGame();
+        }
         StartCoroutine(SetPlayerPositionAfterFrame(obj));
     }
     
@@ -70,8 +80,6 @@ public class GameManager : MonoBehaviour
             Debug.LogError("Player index out of range");
             yield break;
         }
-        Debug.Log("Player joined at index " + obj.playerIndex);
-        Debug.Log("Player spawnpoint " + spawnPoints[obj.playerIndex].transform.position);
         yield return new WaitForEndOfFrame();
         obj.GetComponent<PlayerMovement>().SetPlayerPositionAndRotation(spawnPoints[obj.playerIndex].transform.position,Quaternion.identity);
         obj.GetComponent<PlayerMovement>().SetPlayerLayer((int)Mathf.Log(playerLayers[obj.playerIndex].value, 2));
@@ -98,7 +106,8 @@ public class GameManager : MonoBehaviour
         switch (gameMode)
         {
             case GameMode.FFA:
-                currentGameMode = new FreeForAll(300f, 10);
+                currentGameMode = new FreeForAll(gameModeDuration, gameModeScore);
+                currentGameMode.onGameEnd.AddListener(HandleEndGame)
 ;               break;
             case GameMode.CrownChase:
                 break;
@@ -110,5 +119,20 @@ public class GameManager : MonoBehaviour
     public int GetScoreGoal()
     {
         return currentGameMode.GetScoreGoal();
+    }
+
+    private void HandleEndGame(PlayerStatistics winner)
+    {
+        Debug.Log($"{LayerMask.LayerToName(winner.gameObject.layer)} won");
+        PlayerManager[] players = FindObjectsOfType<PlayerManager>();
+        foreach (PlayerManager player in players)
+        {
+            player.EndGame();
+        }
+    }
+
+    public float GetTimer()
+    {
+        return currentGameMode.Timer;
     }
 }

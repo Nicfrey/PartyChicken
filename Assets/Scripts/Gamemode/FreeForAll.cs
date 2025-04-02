@@ -1,5 +1,3 @@
-using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class FreeForAll : GameModeBase
 {
@@ -8,14 +6,15 @@ public class FreeForAll : GameModeBase
         
     }
 
-    public override void CheckEndGame()
+    protected override void CheckEndGame()
     {
         AddScore();
         foreach (PlayerStatistics statistics in players)
         {
             if (statistics.Kills >= scoreGoal)
             {
-                onGameEnd.Invoke(statistics);
+                onGameEnd?.Invoke(statistics);
+                State = GameModeState.Ending;
             }
         }
     }

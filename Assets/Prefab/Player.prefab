@@ -19,6 +19,7 @@ GameObject:
   - component: {fileID: 1737699819882641264}
   - component: {fileID: 2987410169779181919}
   - component: {fileID: 729021119885511601}
+  - component: {fileID: 3587844521984593601}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -311,6 +312,18 @@ MonoBehaviour:
   killsText: {fileID: 4415713393090981511}
   deathsText: {fileID: 621109478152027068}
   scoreText: {fileID: 2272400369482884478}
+--- !u!114 &3587844521984593601
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 179308493097817260}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aeb1a53ea155a554580c49643d068e0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &687786387864435915
 GameObject:
   m_ObjectHideFlags: 0

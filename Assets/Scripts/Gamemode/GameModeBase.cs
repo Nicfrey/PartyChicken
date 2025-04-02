@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
@@ -18,9 +20,11 @@ public abstract class GameModeBase
 
     protected List<PlayerStatistics> players;
     
-    public GameModeState State { get; private set; }
+    public GameModeState State { get; protected set; }
+    public float Timer => timerGame;
 
-    public UnityEvent<PlayerStatistics> onGameEnd;
+    public UnityEvent<PlayerStatistics> onGameEnd = new ();
+    public UnityEvent<PlayerStatistics> onGameStart = new ();
 
     protected GameModeBase(float timerGame, int scoreGoal)
     {
@@ -38,6 +42,10 @@ public abstract class GameModeBase
     public void StartGame()
     {
         State = GameModeState.Playing;
+        foreach (PlayerStatistics player in players)
+        {
+            player.ResetStats();
+        }
     }
 
     public void PauseGame()
@@ -50,6 +58,38 @@ public abstract class GameModeBase
         return scoreGoal;
     }
 
-    public abstract void CheckEndGame();
+    public void Update()
+    {
+        if (State == GameModeState.Playing)
+        {
+            AddScore();
+            CheckEndGame();
+            HandleTimer();
+        }
+    }
+
+    private void HandleTimer()
+    {
+        timerGame -= Time.deltaTime;
+        if (timerGame <= 0)
+        {
+            State = GameModeState.Ending;
+            // Check the player with the highest score
+            int highestScore = players.Max(player => player.Score);
+            List<PlayerStatistics> highestPlayers = players.Where(player => player.Score == highestScore).ToList();
+            if (highestPlayers.Count > 1)
+            {
+                int highestDeath = highestPlayers.Max(player => player.Deaths);
+                PlayerStatistics winner = highestPlayers.FirstOrDefault(player => player.Deaths == highestDeath);
+                onGameEnd?.Invoke(winner);
+            }
+            else
+            {
+                onGameEnd?.Invoke(players.First());
+            }
+        }
+    }
+
+    protected abstract void CheckEndGame();
     protected abstract void AddScore();
 }

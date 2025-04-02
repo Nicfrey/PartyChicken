@@ -15,11 +15,7 @@ public class PlayerStatistics : MonoBehaviour
         target = GetComponent<Target>();
         target.onDeath.AddListener(AddDeath);
     }
-
-    public void AddScore()
-    {
-        Score++;
-    }
+    
 
     private void AddKill()
     {
@@ -30,5 +26,12 @@ public class PlayerStatistics : MonoBehaviour
     {
         Deaths++;
         playerShooting.AddKill();
+    }
+
+    public void ResetStats()
+    {
+        Score = 0;
+        Kills = 0;
+        Deaths = 0;
     }
 }
