@@ -193,6 +193,8 @@ public class Weapon : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
+        if (other.gameObject == owner.gameObject)
+            return;
         if (other.gameObject.TryGetComponent(out Target target))
         {
             int damage = (int)Mathf.Clamp(GetComponent<Rigidbody>().velocity.magnitude, 0f, 10f);

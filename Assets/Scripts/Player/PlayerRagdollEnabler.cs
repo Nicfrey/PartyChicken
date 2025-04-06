@@ -21,8 +21,8 @@ public class PlayerRagdollEnabler : MonoBehaviour
     {
         rbCopy = rb;
         health = GetComponentInParent<Target>();
-        health.onDeath.AddListener(OnDeath);
-        health.onRevive.AddListener(OnRevive);
+        // health.onDeath.AddListener(OnDeath);
+        // health.onRevive.AddListener(OnRevive);
         ragdolColliders = GetComponentsInChildren<Collider>();
         if(!ragdollOnStart)
         {
