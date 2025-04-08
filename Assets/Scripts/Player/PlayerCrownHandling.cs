@@ -9,6 +9,7 @@ public class PlayerCrownHandling : MonoBehaviour
     private Transform crownTransform;
     
     private Crown currentCrown;
+    public bool HasCrown => currentCrown != null;
 
     private void Start()
     {

@@ -1,4 +1,5 @@
 using System;
+using Cinemachine;
 using UnityEngine;
 
 
@@ -8,6 +9,8 @@ public class PlayerManager : MonoBehaviour
     private PlayerDeathBehavior playerDeath;
     private PlayerWeaponHandling weaponHandling;   
     private PlayerStatistics playerStatistics;
+    private PlayerCrownHandling playerCrownHandling;
+    private PlayerCrownDetection playerCrownDetection;
 
     private void Start()
     {
@@ -15,6 +18,8 @@ public class PlayerManager : MonoBehaviour
         playerDeath = GetComponent<PlayerDeathBehavior>();
         playerStatistics = GetComponent<PlayerStatistics>();
         weaponHandling = GetComponent<PlayerWeaponHandling>();
+        playerCrownHandling = GetComponent<PlayerCrownHandling>();
+        playerCrownDetection = GetComponent<PlayerCrownDetection>();
     }
 
     public void EndGame()
@@ -31,6 +36,14 @@ public class PlayerManager : MonoBehaviour
         playerDeath.enabled = true;
         weaponHandling.enabled = true;
         playerStatistics.enabled = true;
+    }
+
+    public void SetPlayerLayer(int layer)
+    {
+        gameObject.layer = layer;
+        GetComponentInChildren<CinemachineVirtualCamera>().gameObject.layer = layer;
+        GetComponentInChildren<Camera>().cullingMask |= 1 << layer;
+        playerCrownDetection.SetLayer(layer);
     }
     
     

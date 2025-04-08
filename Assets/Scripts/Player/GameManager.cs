@@ -84,7 +84,7 @@ public class GameManager : MonoBehaviour
 
         yield return null;
         obj.GetComponent<PlayerMovement>().SetPlayerPositionAndRotation(spawnPoints[obj.playerIndex].transform.position,Quaternion.identity);
-        obj.GetComponent<PlayerMovement>().SetPlayerLayer((int)Mathf.Log(playerLayers[obj.playerIndex].value, 2));
+        obj.GetComponent<PlayerManager>().SetPlayerLayer((int)Mathf.Log(playerLayers[obj.playerIndex].value, 2));
         obj.GetComponent<PlayerSkinSelection>().SelectSkin(obj.playerIndex);
     }
 

@@ -27082,11 +27082,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3650709577038758177, guid: 06b7bd2949cccf84da6badd162032575, type: 3}
       propertyPath: gameMode
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3650709577038758177, guid: 06b7bd2949cccf84da6badd162032575, type: 3}
       propertyPath: gameModeScore
-      value: 10
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 3650709577038758177, guid: 06b7bd2949cccf84da6badd162032575, type: 3}
       propertyPath: gameModeDuration
