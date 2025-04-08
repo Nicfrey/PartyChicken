@@ -41,7 +41,7 @@ public class Target : MonoBehaviour, IDamageable
         onHealthChanged?.Invoke(health);
     }
 
-    private bool IsDead()
+    public bool IsDead()
     {
         return health <= 0;
     }

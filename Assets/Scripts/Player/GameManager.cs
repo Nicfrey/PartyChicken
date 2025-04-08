@@ -21,7 +21,8 @@ public class GameManager : MonoBehaviour
     [Header("GameMode Settings")]
     [SerializeField] private GameMode gameMode;
     [SerializeField] [Range(1f,300f)] private float gameModeDuration;
-    [SerializeField] [Range(1,30)] private int gameModeScore;
+    [SerializeField] [Range(1,60)] private int gameModeScore;
+    [SerializeField] private GameObject crownPrefab;
     
     private GameModeBase currentGameMode;
     public GameModeBase CurrentGameMode => currentGameMode;
@@ -109,13 +110,14 @@ public class GameManager : MonoBehaviour
         {
             case GameMode.FFA:
                 currentGameMode = new FreeForAll(gameModeDuration, gameModeScore);
-                currentGameMode.onGameEnd.AddListener(HandleEndGame)
 ;               break;
             case GameMode.CrownChase:
+                currentGameMode = new CaptureTheCrown(gameModeDuration, gameModeScore,crownPrefab);
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
         }
+        currentGameMode.onGameEnd.AddListener(HandleEndGame);
     }
 
     public int GetScoreGoal()

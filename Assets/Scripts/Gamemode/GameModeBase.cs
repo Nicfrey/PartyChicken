@@ -39,7 +39,7 @@ public abstract class GameModeBase
         players.Add(playerInput.GetComponent<PlayerStatistics>());
     }
 
-    public void StartGame()
+    public virtual void StartGame()
     {
         State = GameModeState.Playing;
         foreach (PlayerStatistics player in players)

@@ -524,7 +524,8 @@ MonoBehaviour:
   lobbyCameraObject: {fileID: 4903667804778856401}
   gameMode: 0
   gameModeDuration: 300
-  gameModeScore: 2
+  gameModeScore: 10
+  crownPrefab: {fileID: 355759675188995521, guid: a461ed144d4559b4ea33f2c5f5d2dcc4, type: 3}
 --- !u!1 &9187783815998774447
 GameObject:
   m_ObjectHideFlags: 0

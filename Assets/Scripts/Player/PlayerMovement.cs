@@ -34,7 +34,6 @@ public class PlayerMovement : MonoBehaviour
 
     private Target target;
     private bool canMove = true;
-    private bool isImpulsed = false;
 
     void Start()
     {
@@ -175,7 +174,6 @@ public class PlayerMovement : MonoBehaviour
         animator.SetFloat("Speed", currentVelocity.magnitude);
         animator.SetBool("IsGrounded", IsGrounded());
         Vector3 velocityWithAvatarRotation = avatar.transform.InverseTransformDirection(currentVelocity);
-        Debug.Log(velocityWithAvatarRotation);
         animator.SetFloat("Right",velocityWithAvatarRotation.x);
         animator.SetFloat("Forward", velocityWithAvatarRotation.z);
     }

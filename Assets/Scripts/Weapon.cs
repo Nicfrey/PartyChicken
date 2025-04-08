@@ -44,7 +44,6 @@ public class Weapon : MonoBehaviour
 
     private int currentAmmunition;
     protected bool canShoot = true;
-    private bool isThrown = false;
     private float timerFire;
     private PlayerStatistics owner;
 
@@ -102,7 +101,6 @@ public class Weapon : MonoBehaviour
         boxCollider.isTrigger = false;
         Rigidbody physics = gameObject.AddComponent<Rigidbody>();
         physics.AddForce(direction * bulletSpeed, ForceMode.Impulse);
-        isThrown = true;
     }
 
     protected virtual void ShootAutomatic(Vector3 direction, Vector3 origin)
