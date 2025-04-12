@@ -10,6 +10,16 @@ public enum GameMode
     CrownChase,
 }
 
+public enum GameState
+{
+    MainMenu,
+    PauseMenu,
+    Playing,
+    Settings,
+    Lobby,
+    StartPlaying
+}
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
@@ -23,6 +33,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] [Range(1f,300f)] private float gameModeDuration;
     [SerializeField] [Range(1,60)] private int gameModeScore;
     [SerializeField] private GameObject crownPrefab;
+    private GameState gameState;
     
     private GameModeBase currentGameMode;
     public GameModeBase CurrentGameMode => currentGameMode;
@@ -33,7 +44,9 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
             playerInputManager = GetComponent<PlayerInputManager>();
-            InitializeGameMode();
+            playerInputManager.enabled = false;
+            ChangeState(GameState.MainMenu);
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -56,16 +69,22 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        currentGameMode.Update();
+        if (gameState == GameState.Playing)
+        {
+            currentGameMode.Update();
+        }
         Rotate();
     }
 
     public void OnPlayerJoined(PlayerInput obj)
     {
-        currentGameMode.AddPlayerStatistic(obj);
-        if (obj.playerIndex == 1)
+        if (gameState == GameState.Playing)
         {
-            currentGameMode.StartGame();
+            currentGameMode.AddPlayerStatistic(obj);
+            if (obj.playerIndex == 1)
+            {
+                currentGameMode.StartGame();
+            }
         }
         StartCoroutine(SetPlayerPositionAfterFrame(obj));
     }
@@ -76,23 +95,33 @@ public class GameManager : MonoBehaviour
 
         DeactivateLobbyCamera(obj);
 
-        if (obj.playerIndex < 0 || obj.playerIndex >= spawnPoints.Count)
+        if (obj.playerIndex < 0)
         {
             Debug.LogError("Player index out of range");
             yield break;
         }
 
-        yield return null;
-        obj.GetComponent<PlayerMovement>().SetPlayerPositionAndRotation(spawnPoints[obj.playerIndex].transform.position,Quaternion.identity);
-        obj.GetComponent<PlayerManager>().SetPlayerLayer((int)Mathf.Log(playerLayers[obj.playerIndex].value, 2));
-        obj.GetComponent<PlayerSkinSelection>().SelectSkin(obj.playerIndex);
+        obj.gameObject.layer = (int)Mathf.Log(playerLayers[obj.playerIndex].value, 2);
+        if (gameState == GameState.Lobby)
+        {
+            obj.GetComponent<PlayerLobbySelection>().GetSelectionPlayerUI();
+        }
+        else
+        {
+            obj.GetComponent<PlayerMovement>().SetPlayerPositionAndRotation(spawnPoints[obj.playerIndex].transform.position,Quaternion.identity);
+            obj.GetComponent<PlayerManager>().SetPlayerLayer((int)Mathf.Log(playerLayers[obj.playerIndex].value, 2));
+            obj.GetComponent<PlayerSkinSelection>().SelectSkin(obj.playerIndex);
+        }
     }
 
     private void DeactivateLobbyCamera(PlayerInput obj)
     {
-        if (obj.playerIndex == 0)
+        if (gameState == GameState.StartPlaying)
         {
-            lobbyCameraObject.SetActive(false);
+            if (obj.playerIndex == 0)
+            {
+                lobbyCameraObject?.SetActive(false);
+            }
         }
     }
 
@@ -132,6 +161,37 @@ public class GameManager : MonoBehaviour
         foreach (PlayerManager player in players)
         {
             player.EndGame();
+        }
+    }
+
+    public void ChangeState(GameState newState)
+    {
+        gameState = newState;
+        if (newState == GameState.Lobby)
+        {
+            playerInputManager.enabled = true;
+        }
+        else if (newState == GameState.MainMenu)
+        {
+            playerInputManager.enabled = false;
+        }
+        else if (newState == GameState.PauseMenu)
+        {
+            Time.timeScale = 0f;
+            playerInputManager.enabled = false;
+        }
+        else if (newState == GameState.Playing)
+        {
+            Time.timeScale = 1f;
+            playerInputManager.enabled = false;
+        }
+        else if (newState == GameState.Settings)
+        {
+            
+        }
+        else if (newState == GameState.StartPlaying)
+        {
+            
         }
     }
 
