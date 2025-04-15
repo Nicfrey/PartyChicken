@@ -15,16 +15,19 @@ public enum GameModeState
 public abstract class GameModeBase
 {
     protected float timerGame;
+    
+    private float timerBeforeStart = 5f;
 
     protected int scoreGoal;
 
     protected List<PlayerStatistics> players;
     
     public GameModeState State { get; protected set; }
-    public float Timer => timerGame;
+
+    public float Timer => State == GameModeState.Playing ? timerGame : timerBeforeStart;
 
     public UnityEvent<PlayerStatistics> onGameEnd = new ();
-    public UnityEvent<PlayerStatistics> onGameStart = new ();
+    public UnityEvent onGameStart = new ();
 
     protected GameModeBase(float timerGame, int scoreGoal)
     {
@@ -46,6 +49,7 @@ public abstract class GameModeBase
         {
             player.ResetStats();
         }
+        onGameStart?.Invoke();
     }
 
     public void PauseGame()
@@ -65,6 +69,20 @@ public abstract class GameModeBase
             AddScore();
             CheckEndGame();
             HandleTimer();
+        }
+        else if (State == GameModeState.Starting)
+        {
+            HandleTimerBeforeStart();
+        }
+    }
+
+    private void HandleTimerBeforeStart()
+    {
+        timerBeforeStart -= Time.deltaTime;
+        if (timerBeforeStart < 0)
+        {
+            StartGame();
+            timerBeforeStart = 5f;
         }
     }
 

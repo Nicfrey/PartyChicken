@@ -79,4 +79,9 @@ public class SelectionPlayerUI : MonoBehaviour
         }
         StartSelecting();
     }
+
+    public int GetCurrentSkin()
+    {
+        return currentSkin;
+    }
 }

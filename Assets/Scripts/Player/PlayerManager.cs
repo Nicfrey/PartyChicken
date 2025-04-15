@@ -20,6 +20,7 @@ public class PlayerManager : MonoBehaviour
         weaponHandling = GetComponent<PlayerWeaponHandling>();
         playerCrownHandling = GetComponent<PlayerCrownHandling>();
         playerCrownDetection = GetComponent<PlayerCrownDetection>();
+        EndGame();
     }
 
     public void EndGame()
@@ -28,6 +29,8 @@ public class PlayerManager : MonoBehaviour
         playerDeath.enabled = false;
         weaponHandling.enabled = false;
         playerStatistics.enabled = false;
+        playerCrownHandling.enabled = false;
+        playerCrownDetection.enabled = false;
     }
 
     public void StartGame()
@@ -36,6 +39,8 @@ public class PlayerManager : MonoBehaviour
         playerDeath.enabled = true;
         weaponHandling.enabled = true;
         playerStatistics.enabled = true;
+        playerCrownHandling.enabled = true;
+        playerCrownDetection.enabled = true;
     }
 
     public void SetPlayerLayer(int layer)

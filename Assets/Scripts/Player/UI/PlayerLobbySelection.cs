@@ -4,6 +4,8 @@ using UnityEngine.InputSystem;
 public class PlayerLobbySelection : MonoBehaviour
 {
     private SelectionPlayerUI selectionPlayerUI;
+    public int SkinSelected { get; private set; }
+    public bool Selected { get; private set; }
 
     public void GetSelectionPlayerUI()
     {
@@ -33,7 +35,11 @@ public class PlayerLobbySelection : MonoBehaviour
         if (context.performed)
         {
             if(selectionPlayerUI != null)
+            {
                 selectionPlayerUI.FinishSelection();
+                SkinSelected = selectionPlayerUI.GetCurrentSkin();
+                Selected = true;
+            }
         }
     }
 
@@ -56,6 +62,7 @@ public class PlayerLobbySelection : MonoBehaviour
         if (context.performed && selectionPlayerUI != null)
         {
             selectionPlayerUI.ReturnSkin();
+            Selected = false;
         }
     }
 }

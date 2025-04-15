@@ -522,6 +522,8 @@ MonoBehaviour:
     m_Bits: 512
   playerInputManager: {fileID: 6656521341155144146}
   lobbyCameraObject: {fileID: 4903667804778856401}
+  selectionPrefab: {fileID: 5645237015381756393, guid: fb804cc2ea576ba4891819571e0b8998, type: 3}
+  playerPrefab: {fileID: 179308493097817260, guid: 5a3e78a17f7282646987e861376c9ff1, type: 3}
   gameMode: 0
   gameModeDuration: 300
   gameModeScore: 10
