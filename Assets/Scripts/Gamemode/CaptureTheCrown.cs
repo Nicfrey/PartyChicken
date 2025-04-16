@@ -40,10 +40,8 @@ public class CaptureTheCrown : GameModeBase
     {
         if (crownObject.CurrentOwner)
         {
-            Debug.Log("Adding score to crown");
             if(!currentOwner)
             {
-                Debug.Log($"A new owner has been added to crown");
                 currentOwner = crownObject.CurrentOwner.GetComponent<PlayerStatistics>();
                 currentTimer = currentOwner.Score;
             }

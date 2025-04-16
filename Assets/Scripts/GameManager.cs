@@ -182,7 +182,6 @@ public class GameManager : MonoBehaviour
 
     private void HandleEndGame(PlayerStatistics winner)
     {
-        Debug.Log($"{LayerMask.LayerToName(winner.gameObject.layer)} won");
         PlayerManager[] players = FindObjectsOfType<PlayerManager>();
         foreach (PlayerManager player in players)
         {
@@ -226,6 +225,7 @@ public class GameManager : MonoBehaviour
         }
         else if (newState == GameState.StartPlaying)
         {
+            playerInputManager.enabled = true;
             InitializeGameMode();
             SceneManager.LoadScene("SecondLevel");
         }
@@ -233,6 +233,7 @@ public class GameManager : MonoBehaviour
 
     public void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        Debug.Log("OnSceneLoaded");
         if (gameState == GameState.StartPlaying)
         {
             spawnPoints.Clear();
