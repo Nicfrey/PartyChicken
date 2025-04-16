@@ -2,12 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class PlayerCrownHandling : MonoBehaviour
 {
-    [SerializeField]
-    private Transform crownTransform;
-    
+    [SerializeField] private Transform crownTransform;
+
     private Crown currentCrown;
     public bool HasCrown => currentCrown != null;
 
@@ -28,10 +28,21 @@ public class PlayerCrownHandling : MonoBehaviour
     {
         if (currentCrown)
         {
-            currentCrown.transform.SetParent(null,true);
-            currentCrown.transform.position = transform.position;
-            currentCrown.transform.rotation = Quaternion.identity;
-            currentCrown.transform.position += Vector3.up;
+            currentCrown.transform.SetParent(null, true);
+            if (playerShooting)
+            {
+                currentCrown.transform.position = transform.position;
+                currentCrown.transform.rotation = Quaternion.identity;
+                currentCrown.transform.position += Vector3.up;    
+            }
+            else
+            {
+                CrownSpawnerBehavior[] spawners = FindObjectsOfType<CrownSpawnerBehavior>();
+                int randomSpawner = Random.Range(0, spawners.Length);
+                CrownSpawnerBehavior spawner = spawners[randomSpawner];
+                currentCrown.transform.position = spawner.transform.position;
+            }
+            
             currentCrown.RemoveOwner();
             currentCrown = null;
         }
