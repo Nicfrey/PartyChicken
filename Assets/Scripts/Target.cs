@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class Target : MonoBehaviour, IDamageable
+public class Target : MonoBehaviour
 {
     public UnityEvent<PlayerStatistics> onDeath;
     public UnityEvent<int> onHealthChanged;
