@@ -9,8 +9,7 @@ public class Target : MonoBehaviour
     public UnityEvent<int> onHealthChanged;
     public UnityEvent onRevive;
 
-    [SerializeField]
-    private int maxHealth = 100;
+    [SerializeField] private int maxHealth = 100;
 
     private int health;
 
@@ -23,13 +22,14 @@ public class Target : MonoBehaviour
     {
         if (IsDead())
             return;
-        
+
         health -= damage;
         if (IsDead())
         {
             onDeath?.Invoke(shootingPlayer);
             return;
         }
+
         onHealthChanged?.Invoke(health);
     }
 

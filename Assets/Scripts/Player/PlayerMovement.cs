@@ -24,6 +24,8 @@ public class PlayerMovement : MonoBehaviour
     private InputActionAsset actionAsset;
     [SerializeField] 
     private Animator animator;
+    [SerializeField] 
+    private Transform aimCamera;
     
     private PlayerInput playerInput;
     private Rigidbody rb;
@@ -92,7 +94,9 @@ public class PlayerMovement : MonoBehaviour
         Vector3 desiredVelocity = Vector3.zero;
         if (move != Vector2.zero && playerIndex == playerInput.playerIndex)
         {
-            desiredVelocity = new Vector3(move.x, 0, move.y) * speed;
+            Vector3 movement = new Vector3(move.x, 0, move.y);
+            desiredVelocity = (movement.x * aimCamera.right + movement.z * aimCamera.forward) * speed;
+            // desiredVelocity = new Vector3(move.x, 0, move.y) * speed;
         }
         if (!IsGrounded && !OnSlope)
         {
@@ -111,6 +115,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+        HandleAnimation();
         if (!canMove)
             return;
         
@@ -118,9 +123,13 @@ public class PlayerMovement : MonoBehaviour
         
         if (rotateDirection != Vector2.zero && playerIndex == playerInput.playerIndex)
         {
-            avatar.transform.forward = new Vector3(rotateDirection.x, 0, rotateDirection.y);
+            Vector3 rotation = new Vector3(rotateDirection.x, 0, rotateDirection.y);
+            Vector3 desiredRotation = rotation.x * aimCamera.right + rotation.z * aimCamera.forward;
+            Debug.DrawRay(transform.position, desiredRotation, Color.red);
+
+            // avatar.transform.forward = new Vector3(rotateDirection.x, 0, rotateDirection.y);
+            avatar.transform.forward = desiredRotation;
         }
-        HandleAnimation();
     }
 
     public void Move(InputAction.CallbackContext context)
@@ -182,5 +191,6 @@ public class PlayerMovement : MonoBehaviour
         Vector3 velocityWithAvatarRotation = avatar.transform.InverseTransformDirection(currentVelocity);
         animator.SetFloat("Right",velocityWithAvatarRotation.x);
         animator.SetFloat("Forward", velocityWithAvatarRotation.z);
+        animator.SetBool("IsDead",target.IsDead());
     }
 }
