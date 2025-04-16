@@ -35,6 +35,36 @@ public class PlayerMovement : MonoBehaviour
     private Target target;
     private bool canMove = true;
 
+    private bool IsGrounded
+    {
+        get
+        {
+            Collider[] colliders = Physics.OverlapSphere(transform.position, 0.1f);
+            foreach (Collider collider in colliders)
+            {
+                if (collider.gameObject != gameObject)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+    }
+
+    private bool OnSlope
+    {
+        get
+        {
+            if(Physics.Raycast(transform.position, Vector3.down, out slopeHit, 0.3f))
+            {
+                float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
+                return angle < slope && angle != 0;
+            }
+            return false;
+        }
+    }
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -64,16 +94,16 @@ public class PlayerMovement : MonoBehaviour
         {
             desiredVelocity = new Vector3(move.x, 0, move.y) * speed;
         }
-        
-        if (!IsGrounded() && !OnSlope())
+        Debug.Log($"Player On Slope: {OnSlope} and Is Grounded: {IsGrounded}");
+        if (!IsGrounded && !OnSlope)
         {
             rb.AddForce(desiredVelocity, ForceMode.Force);
         }
-        else if (OnSlope())
+        else if (OnSlope && IsGrounded)
         {
             rb.AddForce(GetSlopeMoveDirection(desiredVelocity.normalized) * (speed * 10f), ForceMode.Force);
         }
-        else
+        else if(IsGrounded && !OnSlope)
         {
             rb.AddForce(desiredVelocity * 10f, ForceMode.Force);
         }
@@ -126,16 +156,7 @@ public class PlayerMovement : MonoBehaviour
     {
         rb.AddForce(direction * forceImpulse, ForceMode.Impulse);
     }
-
-    private bool OnSlope()
-    {
-        if(Physics.Raycast(transform.position, Vector3.down, out slopeHit, 0.3f))
-        {
-            float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
-            return angle < slope && angle != 0;
-        }
-        return false;
-    }
+    
 
     private Vector3 GetSlopeMoveDirection(Vector3 direction)
     {
@@ -144,26 +165,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void ModifyDragWhenGrounded()
     {
-        rb.drag = IsGrounded() ? 5f : 0f;
-    }
-
-    private bool IsGrounded()
-    {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, 0.05f);
-        foreach (Collider collider in colliders)
-        {
-            if (collider.gameObject != gameObject)
-            {
-                return true;
-            }
-        }
-
-        return false;
+        rb.drag = IsGrounded ? 5f : 0f;
     }
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = IsGrounded() ? Color.black : Color.red;
+        Gizmos.color = IsGrounded ? Color.black : Color.red;
         Gizmos.DrawWireSphere(transform.position, 0.05f);
     }
 
@@ -172,7 +179,7 @@ public class PlayerMovement : MonoBehaviour
         Vector3 currentVelocity = rb.velocity;
         currentVelocity.y = 0f;
         animator.SetFloat("Speed", currentVelocity.magnitude);
-        animator.SetBool("IsGrounded", IsGrounded());
+        animator.SetBool("IsGrounded", IsGrounded);
         Vector3 velocityWithAvatarRotation = avatar.transform.InverseTransformDirection(currentVelocity);
         animator.SetFloat("Right",velocityWithAvatarRotation.x);
         animator.SetFloat("Forward", velocityWithAvatarRotation.z);

@@ -9761,8 +9761,8 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.32
-  m_Height: 1.6
+  m_Radius: 0.6
+  m_Height: 1.84
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0.69}
 --- !u!114 &3379004235214618625
@@ -9777,6 +9777,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03311e411bb21ef48946dba592c90a6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bloodPrefab: {fileID: 0}
+  wallPrefab: {fileID: 0}
+  explosionRadius: 10
   explosionEffect: {fileID: 1804206099813350, guid: 4dd02b5f854b6c84990fbeb810abffe4, type: 3}
   trailEffect: {fileID: 7829381879639098042}
   forceImpulse: 15

@@ -70,7 +70,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   heartMesh: {fileID: 7824649262700931885}
   heal: 50
-  recoveryTime: 20
+  recoveryTime: 45
 --- !u!114 &2943702894558197680
 MonoBehaviour:
   m_ObjectHideFlags: 0

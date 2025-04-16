@@ -48,15 +48,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ammunition: 30
-  damage: 7
+  damage: 33
   range: 15
   fireMode: 0
   fireRate: 0.2
   muzzleFlash: {fileID: 2793661629942888897}
   bulletPrefab: {fileID: 8599029945474656996, guid: c6d13e91ac4d62c45a5680d7e7873c57, type: 3}
   bulletSpawnPoint: {fileID: 6567007428122740988}
-  bulletSpeed: 15
-  weaponName: 0
+  bulletSpeed: 30
+  weaponName: 2
 --- !u!65 &5977560461272659458
 BoxCollider:
   m_ObjectHideFlags: 0

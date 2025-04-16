@@ -78,7 +78,7 @@ public class PlayerWeaponHandling : MonoBehaviour
         if (HasWeapon())
         {
             currentWeapon.Throw(weaponHolder.forward, weaponHolder.position);
-            onWeaponThrow?.Invoke(currentWeapon);
+            onWeaponThrow?.Invoke(null);
             Destroy(currentWeapon.gameObject, 5f);
             currentWeapon = null;
         }

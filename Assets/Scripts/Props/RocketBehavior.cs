@@ -1,11 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
 public class RocketBehavior : BulletBehaviour
 {
-    public float ExplosionRadius { private get; set; } = 5f;
+    
+    [SerializeField]
+    private float explosionRadius  = 5f;
     public int ExplosionDamage { private get; set; } = 20;
     [SerializeField]
     private GameObject explosionEffect;
@@ -47,7 +51,7 @@ public class RocketBehavior : BulletBehaviour
     private void Explode()
     {
         hasExploded = true;
-        Collider[] colliders = Physics.OverlapSphere(transform.position, ExplosionRadius);
+        Collider[] colliders = Physics.OverlapSphere(transform.position, explosionRadius);
         bool hasHitPlayer = false;
 
         foreach (var collider in colliders)
@@ -68,5 +72,11 @@ public class RocketBehavior : BulletBehaviour
         GameObject effect = Instantiate(explosionEffect, transform.position,
             hasHitPlayer ? Quaternion.identity : Quaternion.Inverse(transform.rotation));
         Destroy(effect,5f);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.magenta;
+        Gizmos.DrawSphere(transform.position,explosionRadius);
     }
 }
