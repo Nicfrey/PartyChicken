@@ -94,7 +94,6 @@ public class PlayerMovement : MonoBehaviour
         {
             desiredVelocity = new Vector3(move.x, 0, move.y) * speed;
         }
-        Debug.Log($"Player On Slope: {OnSlope} and Is Grounded: {IsGrounded}");
         if (!IsGrounded && !OnSlope)
         {
             rb.AddForce(desiredVelocity, ForceMode.Force);

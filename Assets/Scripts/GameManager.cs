@@ -134,6 +134,7 @@ public class GameManager : MonoBehaviour
             playerSkinSelections.Add(playerSelection);
             playerSelection.GetSelectionPlayerUI();
             playerSelection.ActivateCameraPlayer();
+            playerSelection.SelectedDevice = obj.devices[0];
         }
         else
         {
@@ -244,9 +245,9 @@ public class GameManager : MonoBehaviour
             playerInputManager.playerPrefab = playerPrefab;
             playerInputManager.joinBehavior = PlayerJoinBehavior.JoinPlayersManually;
             playerInputManager.splitScreen = true;
-            foreach (PlayerLobbySelection playerSelection in playerSkinSelections)
+            for(int i = 0; i < playerSkinSelections.Count; i++)
             {
-                Instantiate(playerPrefab);
+                playerInputManager.JoinPlayer(i,-1,null,playerSkinSelections[i].SelectedDevice);
             }
         }
     }

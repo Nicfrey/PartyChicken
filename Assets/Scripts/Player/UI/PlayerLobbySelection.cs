@@ -7,6 +7,8 @@ public class PlayerLobbySelection : MonoBehaviour
     private SelectionPlayerUI selectionPlayerUI;
     public int SkinSelected { get; private set; }
     public bool Selected { get; private set; }
+    
+    public InputDevice SelectedDevice { get; set; }
 
     public void GetSelectionPlayerUI()
     {
