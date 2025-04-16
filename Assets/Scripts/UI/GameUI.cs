@@ -1,10 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.UI;
 
 public class GameUI : MonoBehaviour
 {
@@ -49,6 +44,11 @@ public class GameUI : MonoBehaviour
     public void RestartGame()
     {
         GameManager.Instance.ChangeState(GameState.StartPlaying);
+    }
+
+    public void GoToMainMenu()
+    {
+        GameManager.Instance.ChangeState(GameState.MainMenu);
     }
 
     public void QuitGame()

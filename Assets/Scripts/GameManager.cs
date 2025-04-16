@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -28,18 +29,21 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<LayerMask> playerLayers;
     [SerializeField] private PlayerInputManager playerInputManager;
     [SerializeField] private GameObject lobbyCameraObject;
-    
-    [Header("Prefabs for players")]
-    [SerializeField] private GameObject selectionPrefab;
+
+    [Header("Prefabs for players")] [SerializeField]
+    private GameObject selectionPrefab;
+
     [SerializeField] private GameObject playerPrefab;
-    [Header("GameMode Settings")]
-    [SerializeField] private GameMode gameMode;
-    [SerializeField] [Range(1f,300f)] private float gameModeDuration;
-    [SerializeField] [Range(1,60)] private int gameModeScore;
+
+    [Header("GameMode Settings")] [SerializeField]
+    private GameMode gameMode;
+
+    [SerializeField] [Range(1f, 300f)] private float gameModeDuration;
+    [SerializeField] [Range(1, 60)] private int gameModeScore;
     [SerializeField] private GameObject crownPrefab;
     private List<PlayerLobbySelection> playerSkinSelections = new();
     private GameState gameState;
-    
+
     private GameModeBase currentGameMode;
     public GameModeBase CurrentGameMode => currentGameMode;
 
@@ -49,7 +53,6 @@ public class GameManager : MonoBehaviour
         {
             Instance = this;
             playerInputManager = GetComponent<PlayerInputManager>();
-            playerInputManager.enabled = false;
             ChangeState(GameState.MainMenu);
             SceneManager.sceneLoaded += OnSceneLoaded;
             DontDestroyOnLoad(gameObject);
@@ -73,11 +76,12 @@ public class GameManager : MonoBehaviour
         if (gameState == GameState.Playing || gameState == GameState.StartPlaying)
         {
             currentGameMode.Update();
-        } 
+        }
         else if (gameState == GameState.Lobby)
         {
             HandleLobbyState();
         }
+
         Rotate();
     }
 
@@ -107,9 +111,10 @@ public class GameManager : MonoBehaviour
         {
             currentGameMode.AddPlayerStatistic(obj);
         }
+
         StartCoroutine(SetPlayerPositionAfterFrame(obj));
     }
-    
+
     private IEnumerator SetPlayerPositionAfterFrame(PlayerInput obj)
     {
         yield return null;
@@ -128,10 +133,12 @@ public class GameManager : MonoBehaviour
             PlayerLobbySelection playerSelection = obj.GetComponent<PlayerLobbySelection>();
             playerSkinSelections.Add(playerSelection);
             playerSelection.GetSelectionPlayerUI();
+            playerSelection.ActivateCameraPlayer();
         }
         else
         {
-            obj.GetComponent<PlayerMovement>().SetPlayerPositionAndRotation(spawnPoints[obj.playerIndex].transform.position,Quaternion.identity);
+            obj.GetComponent<PlayerMovement>()
+                .SetPlayerPositionAndRotation(spawnPoints[obj.playerIndex].transform.position, Quaternion.identity);
             obj.GetComponent<PlayerManager>().SetPlayerLayer((int)Mathf.Log(playerLayers[obj.playerIndex].value, 2));
             obj.GetComponent<PlayerSkinSelection>().SelectSkin(playerSkinSelections[obj.playerIndex].SkinSelected);
         }
@@ -139,21 +146,16 @@ public class GameManager : MonoBehaviour
 
     private void DeactivateLobbyCamera(PlayerInput obj)
     {
-        if (gameState == GameState.StartPlaying)
+        if (obj.playerIndex == 0)
         {
-            if (obj.playerIndex == 0)
-            {
-                lobbyCameraObject?.SetActive(false);
-            }
+            // lobbyCameraObject?.SetActive(false);
+            GetComponentInChildren<CinemachineVirtualCamera>().Priority = 9;
         }
     }
 
     private void Rotate()
     {
-        if (playerInputManager.playerCount < 1)
-        {
-            transform.Rotate(Vector3.up, 10f * Time.deltaTime);
-        }
+        transform.Rotate(Vector3.up, 10f * Time.deltaTime);
     }
 
     private void InitializeGameMode()
@@ -197,11 +199,13 @@ public class GameManager : MonoBehaviour
             playerInputManager.enabled = true;
             playerInputManager.splitScreen = false;
             playerInputManager.playerPrefab = selectionPrefab;
+            playerInputManager.EnableJoining();
             playerInputManager.joinBehavior = PlayerJoinBehavior.JoinPlayersWhenButtonIsPressed;
             playerSkinSelections.Clear();
         }
         else if (newState == GameState.MainMenu)
         {
+            SceneManager.LoadScene("MainMenu");
             playerInputManager.enabled = false;
         }
         else if (newState == GameState.PauseMenu)
@@ -221,7 +225,6 @@ public class GameManager : MonoBehaviour
         }
         else if (newState == GameState.Settings)
         {
-            
         }
         else if (newState == GameState.StartPlaying)
         {
@@ -250,6 +253,6 @@ public class GameManager : MonoBehaviour
 
     public float GetTimer()
     {
-        return currentGameMode.Timer;    
+        return currentGameMode.Timer;
     }
 }

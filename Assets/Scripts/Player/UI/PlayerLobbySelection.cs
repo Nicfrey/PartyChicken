@@ -1,3 +1,4 @@
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -27,6 +28,20 @@ public class PlayerLobbySelection : MonoBehaviour
         else
         {
             selectionPlayerUI.StartSelecting();
+        }
+    }
+
+    public void ActivateCameraPlayer()
+    {
+        CinemachineVirtualCamera[] cinemachineVirtualCameras = FindObjectsOfType<CinemachineVirtualCamera>(true);
+        int index = 0;
+        while (cinemachineVirtualCameras != null && index < cinemachineVirtualCameras.Length)
+        {
+            if (cinemachineVirtualCameras[index].gameObject.layer == gameObject.layer)
+            {
+                cinemachineVirtualCameras[index].gameObject.SetActive(true);
+            }
+            ++index;
         }
     }
 
