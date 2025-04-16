@@ -6,8 +6,6 @@ using UnityEngine.Serialization;
 
 public class Crown : MonoBehaviour
 {
-    [SerializeField] 
-    private Light lightCrown;
     [SerializeField]
     private Transform visual;
     private PlayerCrownHandling currentOwner;
@@ -33,7 +31,6 @@ public class Crown : MonoBehaviour
                 playerCrownHandling.EquipCrown(this);
                 currentOwner = playerCrownHandling;
                 propShowingBehavior.enabled = false;
-                lightCrown.intensity = 0.5f;
                 visual.transform.localPosition = Vector3.zero;
                 visual.transform.localRotation = Quaternion.identity;
             }
@@ -46,7 +43,6 @@ public class Crown : MonoBehaviour
         {
             currentOwner = null;
             propShowingBehavior.enabled = true;
-            lightCrown.intensity = 1.5f;
         }
         else
         {

@@ -4586,6 +4586,10 @@ PrefabInstance:
       propertyPath: gameMode
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3650709577038758177, guid: 06b7bd2949cccf84da6badd162032575, type: 3}
+      propertyPath: gameModeScore
+      value: 60
+      objectReference: {fileID: 0}
     - target: {fileID: 6656521341155144146, guid: 06b7bd2949cccf84da6badd162032575, type: 3}
       propertyPath: m_SplitScreen
       value: 0
