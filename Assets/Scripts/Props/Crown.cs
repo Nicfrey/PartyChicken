@@ -1,8 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class Crown : MonoBehaviour
 {
@@ -12,10 +8,18 @@ public class Crown : MonoBehaviour
     public PlayerCrownHandling CurrentOwner => currentOwner;
     private PropShowingBehavior propShowingBehavior;
 
+    public static Crown Instance { get; private set; }
+
     private void Start()
     {
         propShowingBehavior = GetComponent<PropShowingBehavior>();
         propShowingBehavior.HasProp(true);
+        Instance = this;
+    }
+
+    private void OnDestroy()
+    {
+        Instance = null;
     }
 
     private void OnTriggerEnter(Collider other)

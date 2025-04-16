@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class PlayerCrownDetection : MonoBehaviour
 {
-    private Crown crown;
     private PlayerCrownHandling playerCrownHandling;
     [SerializeField] 
     private Transform arrowTransform;
@@ -22,21 +21,16 @@ public class PlayerCrownDetection : MonoBehaviour
 
     private void Update()
     {
-        GetCrown();
         RotateDetection();
     }
 
     private void GetCrown()
     {
-        if (!crown)
-        {
-            crown = FindObjectOfType<Crown>();
-        }
     }
 
     private void RotateDetection()
     {
-        if (!crown)
+        if (!Crown.Instance)
             return;
         
         
@@ -47,7 +41,8 @@ public class PlayerCrownDetection : MonoBehaviour
         else
         {
             arrowTransform.gameObject.SetActive(true);
-            arrowTransform.forward = (crown.transform.position - transform.position).normalized;
+            arrowTransform.LookAt(Crown.Instance.transform.position);
+            arrowTransform.rotation = Quaternion.Euler(0,arrowTransform.rotation.eulerAngles.y,0);
         }
     }
 
