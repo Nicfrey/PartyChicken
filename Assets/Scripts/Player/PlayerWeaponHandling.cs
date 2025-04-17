@@ -7,6 +7,7 @@ using UnityEngine.Animations.Rigging;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
+using Random = UnityEngine.Random;
 
 public class PlayerWeaponHandling : MonoBehaviour
 {
@@ -17,6 +18,9 @@ public class PlayerWeaponHandling : MonoBehaviour
     public UnityEvent<Weapon> onWeaponShoot;
 
     [SerializeField] private Transform weaponHolder;
+
+    [SerializeField] private Animator animator;
+    
     private TwoBoneIKConstraint twoBoneIKConstraint;
     private Weapon currentWeapon = null;
     private bool isShooting = false;
@@ -24,6 +28,7 @@ public class PlayerWeaponHandling : MonoBehaviour
     private void Start()
     {
         twoBoneIKConstraint = weaponHolder.GetComponent<TwoBoneIKConstraint>();
+        twoBoneIKConstraint.weight = HasWeapon() ? 1f : 0f;
     }
 
     void Update()
@@ -39,6 +44,11 @@ public class PlayerWeaponHandling : MonoBehaviour
         }
     }
 
+    private void Punch()
+    {
+        
+    }
+    
     public void EquipWeapon(GameObject weapon)
     {
         Throw();
@@ -60,6 +70,17 @@ public class PlayerWeaponHandling : MonoBehaviour
             if (context.canceled)
                 currentWeapon.StopShoot();
         }
+        else
+        {
+            animator.SetBool("IsPunching",true);
+            animator.SetFloat("Punch",Random.Range(0,1));
+            Invoke(nameof(ResetPunch),0.5f);
+        }
+    }
+
+    private void ResetPunch()
+    {
+        animator.SetBool("IsPunching",false);
     }
 
     public void ThrowInput(InputAction.CallbackContext context)
