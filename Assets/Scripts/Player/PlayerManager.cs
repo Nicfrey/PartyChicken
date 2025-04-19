@@ -49,6 +49,7 @@ public class PlayerManager : MonoBehaviour
         GetComponentInChildren<CinemachineVirtualCamera>().gameObject.layer = layer;
         GetComponentInChildren<Camera>().cullingMask |= 1 << layer;
         playerCrownDetection.SetLayer(layer);
+        weaponHandling.SetLayerCanvas(layer);
     }
     
     

@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3079252955121030648}
   - component: {fileID: 4832505752927749578}
   - component: {fileID: 5977560461272659458}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: AssaultRifle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,9 +86,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3079252955121030648}
     m_Modifications:
+    - target: {fileID: 1095744272416284, guid: b46264f9e12caed4cb53e7c2ad64aa54, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1198663731479534, guid: b46264f9e12caed4cb53e7c2ad64aa54, type: 3}
       propertyPath: m_Name
       value: FX_Gunshot_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 1198663731479534, guid: b46264f9e12caed4cb53e7c2ad64aa54, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1446785646928508, guid: b46264f9e12caed4cb53e7c2ad64aa54, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4702343032138574, guid: b46264f9e12caed4cb53e7c2ad64aa54, type: 3}
       propertyPath: m_LocalPosition.x
@@ -169,9 +181,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3079252955121030648}
     m_Modifications:
+    - target: {fileID: 3026703891113881784, guid: e68bb04873062d44db350c647dbb8563, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4267774878307912648, guid: e68bb04873062d44db350c647dbb8563, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4318073352953623844, guid: e68bb04873062d44db350c647dbb8563, type: 3}
       propertyPath: m_Name
       value: AssaultRifle1_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 4318073352953623844, guid: e68bb04873062d44db350c647dbb8563, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4318073352953981188, guid: e68bb04873062d44db350c647dbb8563, type: 3}
       propertyPath: m_LocalScale.x
@@ -223,6 +247,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4318073352953981188, guid: e68bb04873062d44db350c647dbb8563, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8360453637132681932, guid: e68bb04873062d44db350c647dbb8563, type: 3}
+      propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:

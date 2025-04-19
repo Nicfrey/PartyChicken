@@ -20,6 +20,7 @@ public class PlayerWeaponHandling : MonoBehaviour
     [SerializeField] private Transform weaponHolder;
 
     [SerializeField] private Animator animator;
+    [SerializeField] private Canvas canvas;
     
     private TwoBoneIKConstraint twoBoneIKConstraint;
     private Weapon currentWeapon = null;
@@ -31,6 +32,7 @@ public class PlayerWeaponHandling : MonoBehaviour
         twoBoneIKConstraint = weaponHolder.GetComponent<TwoBoneIKConstraint>();
         twoBoneIKConstraint.weight = HasWeapon() ? 1f : 0f;
         target = GetComponent<Target>();
+        canvas.gameObject.SetActive(false);
         target.onDeath.AddListener(OnDeath);
     }
 
@@ -47,6 +49,7 @@ public class PlayerWeaponHandling : MonoBehaviour
         
         if (HasWeapon())
         {
+            UpdateCanvasAim();
             if (isShooting)
             {
                 currentWeapon.Shoot(transform.forward, transform.position);
@@ -63,6 +66,7 @@ public class PlayerWeaponHandling : MonoBehaviour
         currentWeapon = newWeapon.GetComponent<Weapon>();
         currentWeapon.SetOwner(GetComponent<PlayerStatistics>());
         onWeaponChange?.Invoke(currentWeapon);
+        canvas.gameObject.SetActive(true);
     }
 
     public void Shoot(InputAction.CallbackContext context)
@@ -108,11 +112,32 @@ public class PlayerWeaponHandling : MonoBehaviour
             onWeaponThrow?.Invoke(null);
             Destroy(currentWeapon.gameObject, 5f);
             currentWeapon = null;
+            canvas.gameObject.SetActive(false);
         }
     }
 
     private bool HasWeapon()
     {
         return currentWeapon != null;
+    }
+
+    private void UpdateCanvasAim()
+    {
+        RaycastHit hit;
+        float distance = Vector3.Distance(weaponHolder.position, canvas.transform.position);
+        int mask = ~((1 << gameObject.layer) | (1 << LayerMask.NameToLayer("Weapon")) | (1 << LayerMask.NameToLayer("Bullet")));
+        if (Physics.Raycast(weaponHolder.position, weaponHolder.forward, out hit, distance,mask))
+        {
+            canvas.transform.position = hit.point;
+        }
+        else
+        {
+            canvas.transform.localPosition = Vector3.forward * 5f;
+        }
+    }
+
+    public void SetLayerCanvas(int layer)
+    {
+        canvas.gameObject.layer = layer;
     }
 }

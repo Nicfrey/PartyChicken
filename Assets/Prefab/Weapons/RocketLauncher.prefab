@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3608283163246173639}
   - component: {fileID: 782406965709899610}
   - component: {fileID: 6275210791808669217}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: RocketLauncher
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -143,6 +143,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MuzzleFlash
       objectReference: {fileID: 0}
+    - target: {fileID: 8355650041568706694, guid: 908a61e320601a9439b483152254a058, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8874701791855335822, guid: 908a61e320601a9439b483152254a058, type: 3}
       propertyPath: ShapeModule.angle
       value: 70.99
@@ -170,9 +174,21 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3608283163246173639}
     m_Modifications:
+    - target: {fileID: 4233216940292226620, guid: b15652a2807140648b7228548ddb0814, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5337138229137338000, guid: b15652a2807140648b7228548ddb0814, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5866099346551979799, guid: b15652a2807140648b7228548ddb0814, type: 3}
       propertyPath: m_Name
       value: HeavyWeapon2_01
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866099346551979799, guid: b15652a2807140648b7228548ddb0814, type: 3}
+      propertyPath: m_Layer
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5866099346552267575, guid: b15652a2807140648b7228548ddb0814, type: 3}
       propertyPath: m_LocalScale.x
