@@ -4,22 +4,12 @@ using UnityEngine;
 
 public class PlayerRotation : MonoBehaviour
 {
-    [SerializeField] 
-    private Transform aimCamera;
-    private Rigidbody rb;
-    
-
-    private void Start()
-    {
-        rb = GetComponent<Rigidbody>();
-    }
+    [SerializeField] private Transform characterTransform;
+    [SerializeField] private Transform aimCamera;
+    [SerializeField] private float rotationSpeed;
 
     private void Update()
     {
-        Vector3 velocity = new Vector3(rb.velocity.x, 0f, rb.velocity.z);
-        velocity.Normalize();
-        aimCamera.forward = Vector3.Slerp(aimCamera.forward, velocity, Time.deltaTime * 0.3f);
+        aimCamera.forward = Vector3.Slerp(aimCamera.forward, characterTransform.forward, Time.deltaTime * rotationSpeed);
     }
-    
-    
 }

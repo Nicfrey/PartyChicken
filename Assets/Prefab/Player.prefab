@@ -406,7 +406,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cf58a372078c02408e194879998a569, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  characterTransform: {fileID: 1739362315256017045}
   aimCamera: {fileID: 4989920309766454304}
+  rotationSpeed: 2
 --- !u!1 &687786387864435915
 GameObject:
   m_ObjectHideFlags: 0

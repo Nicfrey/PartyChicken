@@ -42,10 +42,10 @@ public class Weapon : MonoBehaviour
     [SerializeField]
     protected WeaponName weaponName;
 
-    private int currentAmmunition;
+    protected int currentAmmunition;
     protected bool canShoot = true;
     private float timerFire;
-    private PlayerStatistics owner;
+    protected PlayerStatistics owner;
 
     void Awake()
     {
@@ -134,7 +134,7 @@ public class Weapon : MonoBehaviour
         return fireMode == FireMode.Automatic;
     }
 
-    private void ShootBehavior()
+    protected virtual void ShootBehavior()
     {
         if (canShoot)
         {

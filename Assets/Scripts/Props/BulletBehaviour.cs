@@ -15,6 +15,9 @@ public class BulletBehaviour : MonoBehaviour
     [SerializeField]
     private GameObject wallPrefab;
 
+    private Vector3 bulletDirection;
+    
+
     protected PlayerStatistics owner;
 
     private Rigidbody rb;
@@ -48,6 +51,7 @@ public class BulletBehaviour : MonoBehaviour
     public void SetDirection(Vector3 direction)
     {
         transform.forward = direction;
+        bulletDirection = direction;
     }
 
     void OnCollisionEnter(Collision collision)
@@ -76,7 +80,7 @@ public class BulletBehaviour : MonoBehaviour
     protected void Move()
     {
         if (StartMove)
-            rb.velocity = transform.forward * Speed;
+            rb.velocity = bulletDirection * Speed;
     }
 
     protected virtual void HandleCollisionTarget(Target target)

@@ -24,16 +24,27 @@ public class PlayerWeaponHandling : MonoBehaviour
     private TwoBoneIKConstraint twoBoneIKConstraint;
     private Weapon currentWeapon = null;
     private bool isShooting = false;
+    private Target target;
 
     private void Start()
     {
         twoBoneIKConstraint = weaponHolder.GetComponent<TwoBoneIKConstraint>();
         twoBoneIKConstraint.weight = HasWeapon() ? 1f : 0f;
+        target = GetComponent<Target>();
+        target.onDeath.AddListener(OnDeath);
+    }
+
+    private void OnDeath(PlayerStatistics arg0)
+    {
+        Throw();
     }
 
     void Update()
     {
         twoBoneIKConstraint.weight = HasWeapon() ? 1f : 0f;
+        if (target.IsDead())
+            return;
+        
         if (HasWeapon())
         {
             if (isShooting)
@@ -42,11 +53,6 @@ public class PlayerWeaponHandling : MonoBehaviour
                 onWeaponShoot?.Invoke(currentWeapon);
             }
         }
-    }
-
-    private void Punch()
-    {
-        
     }
     
     public void EquipWeapon(GameObject weapon)
@@ -61,7 +67,7 @@ public class PlayerWeaponHandling : MonoBehaviour
 
     public void Shoot(InputAction.CallbackContext context)
     {
-        if (!enabled)
+        if (!enabled || target.IsDead())
             return;
         
         if (HasWeapon())
