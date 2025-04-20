@@ -245,9 +245,9 @@ public class GameManager : MonoBehaviour
             playerInputManager.playerPrefab = playerPrefab;
             playerInputManager.joinBehavior = PlayerJoinBehavior.JoinPlayersManually;
             playerInputManager.splitScreen = true;
-            for(int i = 0; i < playerSkinSelections.Count; i++)
+            for (int i = 0; i < playerSkinSelections.Count; i++)
             {
-                playerInputManager.JoinPlayer(i,-1,null,playerSkinSelections[i].SelectedDevice);
+                playerInputManager.JoinPlayer(i, -1, null, playerSkinSelections[i].SelectedDevice);
             }
         }
     }

@@ -72,7 +72,10 @@ public class PlayerWeaponHandling : MonoBehaviour
     public void Shoot(InputAction.CallbackContext context)
     {
         if (!enabled || target.IsDead())
+        {
+            isShooting = false;
             return;
+        }
         
         if (HasWeapon())
         {
@@ -118,7 +121,7 @@ public class PlayerWeaponHandling : MonoBehaviour
 
     private bool HasWeapon()
     {
-        return currentWeapon != null;
+        return currentWeapon;
     }
 
     private void UpdateCanvasAim()

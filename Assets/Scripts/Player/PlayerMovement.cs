@@ -14,6 +14,8 @@ public class PlayerMovement : MonoBehaviour
     [Header("Movement Speed")]
     [SerializeField] 
     private float speed = 5f;
+    [SerializeField]
+    private float jumpForce = 5f;
     [Header("Movement Slope")]
     [SerializeField]
     private float slope = 40f;
@@ -36,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
 
     private Target target;
     private bool canMove = true;
+    private bool isJumping = false;
 
     private bool IsGrounded
     {
@@ -98,6 +101,12 @@ public class PlayerMovement : MonoBehaviour
             desiredVelocity = (movement.x * aimCamera.right + movement.z * aimCamera.forward) * speed;
             // desiredVelocity = new Vector3(move.x, 0, move.y) * speed;
         }
+
+        if (isJumping)
+        {
+            rb.AddForce(jumpForce * Vector3.up, ForceMode.Impulse);
+            isJumping = false;
+        }
         if (!IsGrounded && !OnSlope)
         {
             rb.AddForce(desiredVelocity, ForceMode.Force);
@@ -142,11 +151,12 @@ public class PlayerMovement : MonoBehaviour
         rotateDirection = context.ReadValue<Vector2>();
     }
 
-    public void SetPlayerLayer(int layerToAdd)
+    public void Jump(InputAction.CallbackContext context)
     {
-        gameObject.layer = layerToAdd;
-        GetComponentInChildren<CinemachineVirtualCamera>().gameObject.layer = layerToAdd;
-        GetComponentInChildren<Camera>().cullingMask |= 1 << layerToAdd;
+        if (context.performed && (IsGrounded || OnSlope))
+        {
+            isJumping = true;
+        } 
     }
 
     public void SetPlayerPositionAndRotation(Vector3 position, Quaternion rotation)
