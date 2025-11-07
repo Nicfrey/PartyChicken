@@ -12,7 +12,7 @@ public class PlayerManager : MonoBehaviour
     private PlayerCrownHandling playerCrownHandling;
     private PlayerCrownDetection playerCrownDetection;
 
-    private void Start()
+    private void Awake()
     {
         playerMovement = GetComponent<PlayerMovement>();
         playerDeath = GetComponent<PlayerDeathBehavior>();
@@ -20,6 +20,10 @@ public class PlayerManager : MonoBehaviour
         weaponHandling = GetComponent<PlayerWeaponHandling>();
         playerCrownHandling = GetComponent<PlayerCrownHandling>();
         playerCrownDetection = GetComponent<PlayerCrownDetection>();
+    }
+
+    private void Start()
+    {
         EndGame();
     }
 

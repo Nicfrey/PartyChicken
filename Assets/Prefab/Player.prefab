@@ -426,7 +426,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterTransform: {fileID: 1739362315256017045}
   aimCamera: {fileID: 4989920309766454304}
-  rotationSpeed: 2
+  rotationSpeed: 10
 --- !u!1 &687786387864435915
 GameObject:
   m_ObjectHideFlags: 0
@@ -1803,8 +1803,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5132004704604725985}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.3826834, y: -0.000000049648825, z: 0.000000020565214, w: 0.92387956}
-  m_LocalPosition: {x: -10.36796, y: 11, z: 16}
+  m_LocalRotation: {x: 0.082480535, y: 0.000000020344846, z: -0.000000001683791, w: 0.9965927}
+  m_LocalPosition: {x: 1, y: 2, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1877,7 +1877,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
-  field of view: 60.000004
+  field of view: 60
   orthographic: 0
   orthographic size: 10
   m_Depth: 0

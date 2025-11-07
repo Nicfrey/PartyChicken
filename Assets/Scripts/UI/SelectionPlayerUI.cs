@@ -77,6 +77,10 @@ public class SelectionPlayerUI : MonoBehaviour
         {
             GameManager.Instance.ChangeState(GameState.MainMenu);
         }
+        else if (checkMarkImage.enabled)
+        {
+            checkMarkImage.enabled = false;
+        }
         StartSelecting();
     }
 

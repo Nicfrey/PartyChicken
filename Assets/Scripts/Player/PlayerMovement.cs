@@ -133,11 +133,7 @@ public class PlayerMovement : MonoBehaviour
         if (rotateDirection != Vector2.zero && playerIndex == playerInput.playerIndex)
         {
             Vector3 rotation = new Vector3(rotateDirection.x, 0, rotateDirection.y);
-            Vector3 desiredRotation = rotation.x * aimCamera.right + rotation.z * aimCamera.forward;
-            Debug.DrawRay(transform.position, desiredRotation, Color.red);
-
-            // avatar.transform.forward = new Vector3(rotateDirection.x, 0, rotateDirection.y);
-            avatar.transform.forward = desiredRotation;
+            avatar.transform.Rotate(Vector3.up, rotation.x * Time.deltaTime * 90f);
         }
     }
 

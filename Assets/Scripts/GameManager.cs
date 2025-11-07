@@ -47,13 +47,16 @@ public class GameManager : MonoBehaviour
     private GameModeBase currentGameMode;
     public GameModeBase CurrentGameMode => currentGameMode;
 
+    [Header("Debug")] [SerializeField] private bool debugMode;
+    [SerializeField] private GameState gameStateDebug;
+
     void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
             playerInputManager = GetComponent<PlayerInputManager>();
-            ChangeState(GameState.MainMenu);
+            ChangeState(debugMode ? gameStateDebug : GameState.MainMenu);
             SceneManager.sceneLoaded += OnSceneLoaded;
             DontDestroyOnLoad(gameObject);
         }
@@ -141,7 +144,8 @@ public class GameManager : MonoBehaviour
             obj.GetComponent<PlayerMovement>()
                 .SetPlayerPositionAndRotation(spawnPoints[obj.playerIndex].transform.position, Quaternion.identity);
             obj.GetComponent<PlayerManager>().SetPlayerLayer((int)Mathf.Log(playerLayers[obj.playerIndex].value, 2));
-            obj.GetComponent<PlayerSkinSelection>().SelectSkin(playerSkinSelections[obj.playerIndex].SkinSelected);
+            obj.GetComponent<PlayerSkinSelection>()
+                .SelectSkin(debugMode ? 0 : playerSkinSelections[obj.playerIndex].SkinSelected);
         }
     }
 
@@ -217,7 +221,8 @@ public class GameManager : MonoBehaviour
         else if (newState == GameState.Playing)
         {
             Time.timeScale = 1f;
-            playerInputManager.enabled = false;
+            if (playerInputManager)
+                playerInputManager.enabled = false;
             PlayerManager[] players = FindObjectsOfType<PlayerManager>();
             foreach (PlayerManager player in players)
             {
@@ -243,11 +248,18 @@ public class GameManager : MonoBehaviour
             spawnPoints.Clear();
             spawnPoints = new List<SpawnPointBehavior>(FindObjectsOfType<SpawnPointBehavior>());
             playerInputManager.playerPrefab = playerPrefab;
-            playerInputManager.joinBehavior = PlayerJoinBehavior.JoinPlayersManually;
+
+            playerInputManager.joinBehavior = debugMode
+                ? PlayerJoinBehavior.JoinPlayersWhenButtonIsPressed
+                : PlayerJoinBehavior.JoinPlayersManually;
             playerInputManager.splitScreen = true;
-            for (int i = 0; i < playerSkinSelections.Count; i++)
+
+            if (!debugMode)
             {
-                playerInputManager.JoinPlayer(i, -1, null, playerSkinSelections[i].SelectedDevice);
+                for (int i = 0; i < playerSkinSelections.Count; i++)
+                {
+                    playerInputManager.JoinPlayer(i, -1, null, playerSkinSelections[i].SelectedDevice);
+                }
             }
         }
     }
