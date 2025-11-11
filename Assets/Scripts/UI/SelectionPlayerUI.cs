@@ -15,7 +15,6 @@ public class SelectionPlayerUI : MonoBehaviour
     [SerializeField] private GameObject[] skins;
     private int currentSkin = -1;
 
-    private bool _canSelect = false;
 
     private void Awake()
     {
@@ -40,14 +39,9 @@ public class SelectionPlayerUI : MonoBehaviour
         }
     }
     
-    private void CanSelect()
-    {
-        _canSelect = true;
-    }
 
     public void StartSelecting()
     {
-        Invoke(nameof(CanSelect),1.5f);
         textJoin.enabled = false;
         ArrowChange(true);
     }
@@ -68,9 +62,6 @@ public class SelectionPlayerUI : MonoBehaviour
 
     public void FinishSelection()
     {
-        if (!IsAbleToSelect())
-            return;
-        
         Debug.Log($"SelectionPlayerUI - FinishSelection: Player selected skin {currentSkin}");
         EnableCheckMark(true);
     }
@@ -89,7 +80,7 @@ public class SelectionPlayerUI : MonoBehaviour
 
     private bool IsAbleToSelect()
     {
-        return !checkMarkImage.enabled && _canSelect;
+        return !checkMarkImage.enabled;
     }
 
     private bool IsAbleToChoose()

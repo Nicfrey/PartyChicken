@@ -1,3 +1,4 @@
+using System;
 using Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -7,8 +8,19 @@ public class PlayerLobbySelection : MonoBehaviour
     private SelectionPlayerUI selectionPlayerUI;
     public int SkinSelected { get; private set; }
     public bool Selected { get; private set; }
-    
+    private bool _canSelect = false;
+
     public InputDevice SelectedDevice { get; set; }
+
+    private void Start()
+    {
+        Invoke(nameof(CanSelect),1.5f);
+    }
+
+    private void CanSelect()
+    {
+        _canSelect = true;
+    }
 
     public void GetSelectionPlayerUI()
     {
@@ -21,7 +33,7 @@ public class PlayerLobbySelection : MonoBehaviour
                 selectionPlayerUI = selectionPlayerUIs[index];
             }
             index++;
-        }
+        }   
 
         if (selectionPlayerUI == null)
         {
@@ -32,7 +44,7 @@ public class PlayerLobbySelection : MonoBehaviour
             selectionPlayerUI.StartSelecting();
         }
     }
-
+ 
     public void ActivateCameraPlayer()
     {
         CinemachineVirtualCamera[] cinemachineVirtualCameras = FindObjectsOfType<CinemachineVirtualCamera>(true);
@@ -49,6 +61,9 @@ public class PlayerLobbySelection : MonoBehaviour
 
     public void SelectSkin(InputAction.CallbackContext context)
     {
+        if (!_canSelect)
+            return;
+        
         if (context.performed)
         {
             if(selectionPlayerUI != null)

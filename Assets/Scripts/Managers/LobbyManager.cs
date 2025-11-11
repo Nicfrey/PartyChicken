@@ -10,15 +10,21 @@ namespace Managers
     public class LobbyManager : MonoBehaviour
     {
         [SerializeField] private GameObject mainMenuUI;
+        [SerializeField] private GameObject gameSettingsUI;
         [SerializeField] private PlayerInputManager playerInputManager;
         [SerializeField] private GameObject cameraLobby;
 
         private List<PlayerLobbySelection> _playerSkinSelections = new();
-
+        
         public void ReturnToMainMenu()
         {
             DeactivateLobby();
             mainMenuUI.SetActive(true);
+        }
+        
+        private void OpenGameSettings()
+        {
+            gameSettingsUI.SetActive(true);
         }
 
         private void DeactivateLobby()
@@ -35,6 +41,7 @@ namespace Managers
                 if (numberReady == _playerSkinSelections.Count)
                 {
                     GlobalSettings.Instance.SetPlayerSkins(_playerSkinSelections);
+                    OpenGameSettings();
                 }
             }
         }

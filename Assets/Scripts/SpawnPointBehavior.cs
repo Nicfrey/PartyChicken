@@ -45,7 +45,7 @@ public class SpawnPointBehavior : MonoBehaviour
 
     void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
+        Gizmos.color = Color.magenta;
         Gizmos.DrawWireSphere(transform.position, radiusDetectionPlayer);
     }
 }

@@ -17,7 +17,7 @@ namespace Settings
         
         [SerializeField] private List<LayerMask> playerLayers;
         public List<LayerMask> PlayerLayers => playerLayers;
-        public List<PlayerLobbySelection> SkinSelected { get; set; }
+        public List<PlayerLobbySelection> SkinSelected { get; set; } = new();
 
         [Header("Debug Settings")] 
         [SerializeField] private bool useSerializedSettings = false;
@@ -55,6 +55,7 @@ namespace Settings
 
         public void SetPlayerSkins(List<PlayerLobbySelection> playerSkinSelections)
         {
+            SkinSelected.Clear();
             foreach (var playerLobbySelection in playerSkinSelections)
             {
                 SkinSelected.Add(playerLobbySelection);
