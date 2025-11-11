@@ -32,7 +32,7 @@ public class Weapon : MonoBehaviour
     [SerializeField]
     protected float fireRate;
     [SerializeField]
-    protected ParticleSystem muzzleFlash;
+    public ParticleSystem muzzleFlash;
     [SerializeField]
     protected GameObject bulletPrefab;
     [SerializeField]

@@ -14,7 +14,7 @@ namespace Managers
     {
         [SerializeField] private TMP_Dropdown gameModeDropdown;
         [SerializeField] private TMP_Dropdown mapDropdown;
-        [SerializeField] private List<SceneAsset> availableMaps;
+        [SerializeField] private List<string> availableMaps;
         [SerializeField] private Slider gameDurationSlider;
         [SerializeField] private Slider gameScoreSlider;
         [SerializeField] private TMP_Text gameDurationText;
@@ -30,7 +30,7 @@ namespace Managers
             mapDropdown.options.Clear();
             foreach (var scene in availableMaps)
             {
-                mapDropdown.options.Add(new TMP_Dropdown.OptionData(scene.name));
+                mapDropdown.options.Add(new TMP_Dropdown.OptionData(scene));
             }
         }
         
@@ -60,7 +60,7 @@ namespace Managers
             GlobalSettings.Instance.LevelSelected = mapDropdown.value;
             GlobalSettings.Instance.MaxTime = (int) gameDurationSlider.value;
             GlobalSettings.Instance.ScoreGoal = (int) gameScoreSlider.value;
-            SceneManager.LoadScene(availableMaps[GlobalSettings.Instance.LevelSelected].name);
+            SceneManager.LoadScene(availableMaps[GlobalSettings.Instance.LevelSelected]);
         }
     } 
 }

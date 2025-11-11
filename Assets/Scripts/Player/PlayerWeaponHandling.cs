@@ -21,7 +21,7 @@ public class PlayerWeaponHandling : MonoBehaviour
 
     [SerializeField] private Animator animator;
     [SerializeField] private Canvas canvas;
-    
+
     private TwoBoneIKConstraint twoBoneIKConstraint;
     private Weapon currentWeapon = null;
     private bool isShooting = false;
@@ -46,18 +46,20 @@ public class PlayerWeaponHandling : MonoBehaviour
         twoBoneIKConstraint.weight = HasWeapon() ? 1f : 0f;
         if (target.IsDead())
             return;
-        
+
         if (HasWeapon())
         {
             UpdateCanvasAim();
             if (isShooting)
             {
-                currentWeapon.Shoot(transform.forward, transform.position);
+                currentWeapon.Shoot(
+                    (canvas.transform.position - currentWeapon.muzzleFlash.transform.position).normalized,
+                    transform.position);
                 onWeaponShoot?.Invoke(currentWeapon);
             }
         }
     }
-    
+
     public void EquipWeapon(GameObject weapon)
     {
         Throw();
@@ -76,7 +78,7 @@ public class PlayerWeaponHandling : MonoBehaviour
             isShooting = false;
             return;
         }
-        
+
         if (HasWeapon())
         {
             isShooting = context.ReadValueAsButton();
@@ -85,26 +87,26 @@ public class PlayerWeaponHandling : MonoBehaviour
         }
         else
         {
-            animator.SetBool("IsPunching",true);
-            animator.SetFloat("Punch",Random.Range(0,1));
-            Invoke(nameof(ResetPunch),0.5f);
+            animator.SetBool("IsPunching", true);
+            animator.SetFloat("Punch", Random.Range(0, 1));
+            Invoke(nameof(ResetPunch), 0.5f);
         }
     }
 
     private void ResetPunch()
     {
-        animator.SetBool("IsPunching",false);
+        animator.SetBool("IsPunching", false);
     }
 
     public void ThrowInput(InputAction.CallbackContext context)
     {
         if (!enabled)
             return;
-        
+
         if (context.performed)
         {
             Throw();
-        } 
+        }
     }
 
     private void Throw()
@@ -128,8 +130,9 @@ public class PlayerWeaponHandling : MonoBehaviour
     {
         RaycastHit hit;
         float distance = Vector3.Distance(weaponHolder.position, canvas.transform.position);
-        int mask = ~((1 << gameObject.layer) | (1 << LayerMask.NameToLayer("Weapon")) | (1 << LayerMask.NameToLayer("Bullet")));
-        if (Physics.Raycast(weaponHolder.position, weaponHolder.forward, out hit, distance,mask))
+        int mask = ~((1 << gameObject.layer) | (1 << LayerMask.NameToLayer("Weapon")) |
+                     (1 << LayerMask.NameToLayer("Bullet")));
+        if (Physics.Raycast(weaponHolder.position, weaponHolder.forward, out hit, distance, mask))
         {
             canvas.transform.position = hit.point;
         }

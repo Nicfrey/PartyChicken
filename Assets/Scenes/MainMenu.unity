@@ -6668,8 +6668,8 @@ MonoBehaviour:
   gameModeDropdown: {fileID: 1839997669}
   mapDropdown: {fileID: 1863475258}
   availableMaps:
-  - {fileID: 102900000, guid: b4a8ef79055e28d4dbc0e0560def5009, type: 3}
-  - {fileID: 102900000, guid: f6342356f1e6bd449a623f125c49e10c, type: 3}
+  - Roof
+  - Circuit
   gameDurationSlider: {fileID: 188895382}
   gameScoreSlider: {fileID: 1154881666}
   gameDurationText: {fileID: 2141398271}
