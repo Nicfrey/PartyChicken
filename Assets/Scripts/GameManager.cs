@@ -2,48 +2,33 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using Settings;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
-public enum GameMode
-{
-    FFA,
-    CrownChase,
-}
 
 public enum GameState
 {
-    MainMenu,
     PauseMenu,
     Playing,
-    Settings,
-    Lobby,
     StartPlaying
 }
 
 public class GameManager : MonoBehaviour
 {
-    public static GameManager Instance { get; private set; }
     private List<SpawnPointBehavior> spawnPoints = new();
-    [SerializeField] private List<LayerMask> playerLayers;
     [SerializeField] private PlayerInputManager playerInputManager;
     [SerializeField] private GameObject lobbyCameraObject;
 
     [Header("Prefabs for players")] [SerializeField]
-    private GameObject selectionPrefab;
-
-    [SerializeField] private GameObject playerPrefab;
+    private GameObject playerPrefab;
 
     [Header("GameMode Settings")] [SerializeField]
     private GameMode gameMode;
 
-    [SerializeField] [Range(1f, 300f)] private float gameModeDuration;
-    [SerializeField] [Range(1, 60)] private int gameModeScore;
     [SerializeField] private GameObject crownPrefab;
-    private List<PlayerLobbySelection> playerSkinSelections = new();
     private GameState gameState;
-
     private GameModeBase currentGameMode;
     public GameModeBase CurrentGameMode => currentGameMode;
 
@@ -52,26 +37,9 @@ public class GameManager : MonoBehaviour
 
     void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            playerInputManager = GetComponent<PlayerInputManager>();
-            ChangeState(debugMode ? gameStateDebug : GameState.MainMenu);
-            SceneManager.sceneLoaded += OnSceneLoaded;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
-
-    private void OnDestroy()
-    {
-        if (Instance == this)
-        {
-            Instance = null;
-        }
+        playerInputManager = GetComponent<PlayerInputManager>();
+        ChangeState(debugMode ? gameStateDebug : GameState.StartPlaying);
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     void Update()
@@ -80,32 +48,8 @@ public class GameManager : MonoBehaviour
         {
             currentGameMode.Update();
         }
-        else if (gameState == GameState.Lobby)
-        {
-            HandleLobbyState();
-        }
 
         Rotate();
-    }
-
-    private void HandleLobbyState()
-    {
-        if (playerSkinSelections.Count > 1)
-        {
-            int numberReady = 0;
-            foreach (PlayerLobbySelection playerSelection in playerSkinSelections)
-            {
-                if (playerSelection.Selected)
-                {
-                    numberReady++;
-                }
-            }
-
-            if (numberReady >= playerSkinSelections.Count)
-            {
-                ChangeState(GameState.StartPlaying);
-            }
-        }
     }
 
     public void OnPlayerJoined(PlayerInput obj)
@@ -130,23 +74,13 @@ public class GameManager : MonoBehaviour
             yield break;
         }
 
-        obj.gameObject.layer = (int)Mathf.Log(playerLayers[obj.playerIndex].value, 2);
-        if (gameState == GameState.Lobby)
-        {
-            PlayerLobbySelection playerSelection = obj.GetComponent<PlayerLobbySelection>();
-            playerSkinSelections.Add(playerSelection);
-            playerSelection.GetSelectionPlayerUI();
-            playerSelection.ActivateCameraPlayer();
-            playerSelection.SelectedDevice = obj.devices[0];
-        }
-        else
-        {
-            obj.GetComponent<PlayerMovement>()
-                .SetPlayerPositionAndRotation(spawnPoints[obj.playerIndex].transform.position, Quaternion.identity);
-            obj.GetComponent<PlayerManager>().SetPlayerLayer((int)Mathf.Log(playerLayers[obj.playerIndex].value, 2));
-            obj.GetComponent<PlayerSkinSelection>()
-                .SelectSkin(debugMode ? 0 : playerSkinSelections[obj.playerIndex].SkinSelected);
-        }
+        obj.gameObject.layer = (int)Mathf.Log(GlobalSettings.Instance.PlayerLayers[obj.playerIndex].value, 2);
+        obj.GetComponent<PlayerMovement>()
+            .SetPlayerPositionAndRotation(spawnPoints[obj.playerIndex].transform.position, Quaternion.identity);
+        obj.GetComponent<PlayerManager>()
+            .SetPlayerLayer((int)Mathf.Log(GlobalSettings.Instance.PlayerLayers[obj.playerIndex].value, 2));
+        obj.GetComponent<PlayerSkinSelection>()
+            .SelectSkin(debugMode ? 0 : GlobalSettings.Instance.SkinSelected[obj.playerIndex].SkinSelected);
     }
 
     private void DeactivateLobbyCamera(PlayerInput obj)
@@ -168,11 +102,11 @@ public class GameManager : MonoBehaviour
         switch (gameMode)
         {
             case GameMode.FFA:
-                currentGameMode = new FreeForAll(gameModeDuration, gameModeScore);
-                ;
+                currentGameMode = new FreeForAll(GlobalSettings.Instance.MaxTime, GlobalSettings.Instance.ScoreGoal);
                 break;
             case GameMode.CrownChase:
-                currentGameMode = new CaptureTheCrown(gameModeDuration, gameModeScore, crownPrefab);
+                currentGameMode = new CaptureTheCrown(GlobalSettings.Instance.MaxTime,
+                    GlobalSettings.Instance.ScoreGoal, crownPrefab);
                 break;
             default:
                 throw new ArgumentOutOfRangeException();
@@ -199,21 +133,7 @@ public class GameManager : MonoBehaviour
     public void ChangeState(GameState newState)
     {
         gameState = newState;
-        if (newState == GameState.Lobby)
-        {
-            playerInputManager.enabled = true;
-            playerInputManager.splitScreen = false;
-            playerInputManager.playerPrefab = selectionPrefab;
-            playerInputManager.EnableJoining();
-            playerInputManager.joinBehavior = PlayerJoinBehavior.JoinPlayersWhenButtonIsPressed;
-            playerSkinSelections.Clear();
-        }
-        else if (newState == GameState.MainMenu)
-        {
-            SceneManager.LoadScene("MainMenu");
-            playerInputManager.enabled = false;
-        }
-        else if (newState == GameState.PauseMenu)
+        if (newState == GameState.PauseMenu)
         {
             Time.timeScale = 0f;
             playerInputManager.enabled = false;
@@ -229,14 +149,10 @@ public class GameManager : MonoBehaviour
                 player.StartGame();
             }
         }
-        else if (newState == GameState.Settings)
-        {
-        }
         else if (newState == GameState.StartPlaying)
         {
             playerInputManager.enabled = true;
             InitializeGameMode();
-            SceneManager.LoadScene("SecondLevel");
         }
     }
 
@@ -247,18 +163,14 @@ public class GameManager : MonoBehaviour
         {
             spawnPoints.Clear();
             spawnPoints = new List<SpawnPointBehavior>(FindObjectsOfType<SpawnPointBehavior>());
-            playerInputManager.playerPrefab = playerPrefab;
-
             playerInputManager.joinBehavior = debugMode
                 ? PlayerJoinBehavior.JoinPlayersWhenButtonIsPressed
                 : PlayerJoinBehavior.JoinPlayersManually;
-            playerInputManager.splitScreen = true;
-
             if (!debugMode)
             {
-                for (int i = 0; i < playerSkinSelections.Count; i++)
+                for (int i = 0; i < GlobalSettings.Instance.SkinSelected.Count; i++)
                 {
-                    playerInputManager.JoinPlayer(i, -1, null, playerSkinSelections[i].SelectedDevice);
+                    playerInputManager.JoinPlayer(i, -1, null, GlobalSettings.Instance.SkinSelected[i].SelectedDevice);
                 }
             }
         }

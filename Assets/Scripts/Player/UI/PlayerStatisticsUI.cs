@@ -1,4 +1,5 @@
 using System;
+using Settings;
 using TMPro;
 using UnityEngine;
 
@@ -20,9 +21,9 @@ public class PlayerStatisticsUI : MonoBehaviour
     
     private void Update()
     {
-        progressBar.SetPercentage(playerStatistics.Score / (float) GameManager.Instance.GetScoreGoal());
+        progressBar.SetPercentage(playerStatistics.Score / (float) GlobalSettings.Instance.ScoreGoal);
         killsText.text = playerStatistics.Kills.ToString();
         deathsText.text = playerStatistics.Deaths.ToString();
-        scoreText.text = playerStatistics.Score + "/" + GameManager.Instance.GetScoreGoal();
+        scoreText.text = playerStatistics.Score + "/" + GlobalSettings.Instance.ScoreGoal;
     }
 }

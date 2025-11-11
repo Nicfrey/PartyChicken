@@ -15,6 +15,8 @@ public class SelectionPlayerUI : MonoBehaviour
     [SerializeField] private GameObject[] skins;
     private int currentSkin = -1;
 
+    private bool _canSelect = false;
+
     private void Awake()
     {
         leftArrowImage.enabled = false;
@@ -37,18 +39,24 @@ public class SelectionPlayerUI : MonoBehaviour
             Debug.LogError("SelectionPlayerUI: No skins selected");
         }
     }
+    
+    private void CanSelect()
+    {
+        _canSelect = true;
+    }
 
     public void StartSelecting()
     {
+        Invoke(nameof(CanSelect),1.5f);
         textJoin.enabled = false;
         ArrowChange(true);
     }
 
     public void ArrowChange(bool left)
     {
-        if (checkMarkImage.enabled)
+        if (!IsAbleToChoose())
             return;
-
+        
         int previousSkin = currentSkin;
         currentSkin += left ? -1 : 1;
         currentSkin = Mathf.Clamp(currentSkin, 0, skins.Length - 1);
@@ -60,10 +68,18 @@ public class SelectionPlayerUI : MonoBehaviour
 
     public void FinishSelection()
     {
-        leftArrowImage.enabled = false;
-        rightArrowImage.enabled = false;
-        checkMarkImage.enabled = true;
+        if (!IsAbleToSelect())
+            return;
+        
+        Debug.Log($"SelectionPlayerUI - FinishSelection: Player selected skin {currentSkin}");
+        EnableCheckMark(true);
     }
+    
+    private void EnableCheckMark(bool enable)
+    {
+        leftArrowImage.enabled = !enable;
+        rightArrowImage.enabled = !enable;
+        checkMarkImage.enabled = enable;    }
 
     private void ChangeSkin(int previousSkin)
     {
@@ -71,17 +87,25 @@ public class SelectionPlayerUI : MonoBehaviour
         skins[currentSkin].gameObject.SetActive(true);
     }
 
+    private bool IsAbleToSelect()
+    {
+        return !checkMarkImage.enabled && _canSelect;
+    }
+
+    private bool IsAbleToChoose()
+    {
+        return !checkMarkImage.enabled;
+    }
+
     public void ReturnSkin()
     {
-        if(!checkMarkImage.enabled && gameObject.layer == LayerMask.NameToLayer("Player1"))
+        if (IsAbleToSelect())
+            return;
+        
+        if (checkMarkImage.enabled)
         {
-            GameManager.Instance.ChangeState(GameState.MainMenu);
+            EnableCheckMark(false);
         }
-        else if (checkMarkImage.enabled)
-        {
-            checkMarkImage.enabled = false;
-        }
-        StartSelecting();
     }
 
     public int GetCurrentSkin()

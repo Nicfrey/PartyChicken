@@ -1,9 +1,10 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameUI : MonoBehaviour
 {
-    private GameManager gameManager;
+    [SerializeField] private GameManager gameManager;
 
     [SerializeField] 
     private TMP_Text timerText;
@@ -43,12 +44,12 @@ public class GameUI : MonoBehaviour
 
     public void RestartGame()
     {
-        GameManager.Instance.ChangeState(GameState.StartPlaying);
+        gameManager.ChangeState(GameState.StartPlaying);
     }
 
     public void GoToMainMenu()
     {
-        GameManager.Instance.ChangeState(GameState.MainMenu);
+        SceneManager.LoadScene("MainMenu");
     }
 
     public void QuitGame()

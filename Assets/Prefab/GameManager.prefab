@@ -433,7 +433,7 @@ GameObject:
   - component: {fileID: 6656521341155144146}
   - component: {fileID: 3650709577038758177}
   m_Layer: 0
-  m_Name: PlayerInputManager
+  m_Name: GameManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -470,7 +470,7 @@ MonoBehaviour:
   m_NotificationBehavior: 0
   m_MaxPlayerCount: 4
   m_AllowJoining: 1
-  m_JoinBehavior: 0
+  m_JoinBehavior: 2
   m_PlayerJoinedEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -511,23 +511,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5c04214cbf99ea43ae5cca53814a635, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerLayers:
-  - serializedVersion: 2
-    m_Bits: 64
-  - serializedVersion: 2
-    m_Bits: 128
-  - serializedVersion: 2
-    m_Bits: 256
-  - serializedVersion: 2
-    m_Bits: 512
   playerInputManager: {fileID: 6656521341155144146}
   lobbyCameraObject: {fileID: 4903667804778856401}
-  selectionPrefab: {fileID: 5645237015381756393, guid: fb804cc2ea576ba4891819571e0b8998, type: 3}
   playerPrefab: {fileID: 179308493097817260, guid: 5a3e78a17f7282646987e861376c9ff1, type: 3}
   gameMode: 0
-  gameModeDuration: 300
-  gameModeScore: 10
   crownPrefab: {fileID: 355759675188995521, guid: a461ed144d4559b4ea33f2c5f5d2dcc4, type: 3}
+  debugMode: 0
+  gameStateDebug: 2
 --- !u!1 &9187783815998774447
 GameObject:
   m_ObjectHideFlags: 0

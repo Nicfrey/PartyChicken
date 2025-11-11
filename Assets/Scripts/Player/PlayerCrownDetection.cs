@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Settings;
 using UnityEngine;
 
 public class PlayerCrownDetection : MonoBehaviour
@@ -12,7 +13,7 @@ public class PlayerCrownDetection : MonoBehaviour
     private void Start()
     {
         playerCrownHandling = GetComponent<PlayerCrownHandling>();
-        if (GameManager.Instance.CurrentGameMode.GetType() != typeof(CaptureTheCrown))
+        if (GlobalSettings.Instance.CurrentGameMode.GetType() != typeof(CaptureTheCrown))
         {
             enabled = false;
             arrowTransform.gameObject.SetActive(false);
