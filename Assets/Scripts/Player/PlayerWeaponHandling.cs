@@ -25,6 +25,7 @@ public class PlayerWeaponHandling : MonoBehaviour
     private TwoBoneIKConstraint twoBoneIKConstraint;
     private Weapon currentWeapon = null;
     private bool isShooting = false;
+    private bool isAiming = false;
     private Target target;
 
     private void Start()
@@ -93,6 +94,17 @@ public class PlayerWeaponHandling : MonoBehaviour
         }
     }
 
+    public void Aim(InputAction.CallbackContext context)
+    {
+        if (!enabled || target.IsDead() || !HasWeapon())
+        {
+            isAiming = false;
+            return;
+        }
+        
+        isAiming = context.performed;
+    }
+
     private void ResetPunch()
     {
         animator.SetBool("IsPunching", false);
@@ -145,5 +157,10 @@ public class PlayerWeaponHandling : MonoBehaviour
     public void SetLayerCanvas(int layer)
     {
         canvas.gameObject.layer = layer;
+    }
+
+    public bool IsAiming()
+    {
+        return isAiming;
     }
 }

@@ -15,6 +15,8 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] 
     private float speed = 5f;
     [SerializeField]
+    private float walkSpeed = 2f;
+    [SerializeField]
     private float jumpForce = 5f;
     [Header("Movement Slope")]
     [SerializeField]
@@ -30,6 +32,7 @@ public class PlayerMovement : MonoBehaviour
     private Transform aimCamera;
     
     private PlayerInput playerInput;
+    private PlayerWeaponHandling playerWeaponHandling;
     private Rigidbody rb;
     
     private RaycastHit slopeHit;
@@ -78,6 +81,7 @@ public class PlayerMovement : MonoBehaviour
         target = GetComponent<Target>();
         target.onDeath.AddListener(HandleDeath);
         target.onRevive.AddListener(HandleRevive);
+        playerWeaponHandling = GetComponent<PlayerWeaponHandling>();
     }
     private void HandleRevive()
     {
@@ -98,7 +102,7 @@ public class PlayerMovement : MonoBehaviour
         if (move != Vector2.zero && playerIndex == playerInput.playerIndex)
         {
             Vector3 movement = new Vector3(move.x, 0, move.y);
-            desiredVelocity = (movement.x * aimCamera.right + movement.z * aimCamera.forward) * speed;
+            desiredVelocity = (movement.x * aimCamera.right + movement.z * aimCamera.forward) * GetCurrentSpeed();
             // desiredVelocity = new Vector3(move.x, 0, move.y) * speed;
         }
 
@@ -122,6 +126,10 @@ public class PlayerMovement : MonoBehaviour
         
     }
 
+    private float GetCurrentSpeed()
+    {
+        return playerWeaponHandling.IsAiming() ? walkSpeed : speed;
+    }
     void Update()
     {
         HandleAnimation();
