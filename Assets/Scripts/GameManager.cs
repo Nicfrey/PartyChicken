@@ -36,7 +36,7 @@ public class GameManager : MonoBehaviour
     [Header("Debug")] [SerializeField] private bool debugMode;
     [SerializeField] private GameState gameStateDebug;
 
-    void Awake()
+    void Start()
     {
         playerInputManager = GetComponent<PlayerInputManager>();
         ChangeState(debugMode ? gameStateDebug : GameState.StartPlaying);
@@ -100,6 +100,10 @@ public class GameManager : MonoBehaviour
 
     private void InitializeGameMode()
     {
+        if (debugMode)
+        {
+            GlobalSettings.Instance.CurrentGameMode = gameMode;
+        }
         switch (GlobalSettings.Instance.CurrentGameMode)
         {
             case GameMode.FFA:

@@ -1,16 +1,23 @@
 using System;
+using AI;
 using Cinemachine;
 using UnityEngine;
 
 
 public class PlayerManager : MonoBehaviour
 {
+    [SerializeField] private bool isAIPlayer = false;
+    [Header("Player Settings")]
     private PlayerMovement playerMovement;
     private PlayerDeathBehavior playerDeath;
     private PlayerWeaponHandling weaponHandling;   
     private PlayerStatistics playerStatistics;
     private PlayerCrownHandling playerCrownHandling;
     private ObjectiveDetection objectiveDetection;
+    
+    [Header("AI Settings")]
+    private AIPlayerMovement aiPlayerMovement;
+    private AIPropsDetection aiPropsDetection;
 
     private void Awake()
     {
@@ -20,6 +27,8 @@ public class PlayerManager : MonoBehaviour
         weaponHandling = GetComponent<PlayerWeaponHandling>();
         playerCrownHandling = GetComponent<PlayerCrownHandling>();
         objectiveDetection = GetComponent<ObjectiveDetection>();
+        aiPlayerMovement = GetComponent<AIPlayerMovement>();
+        aiPropsDetection = GetComponent<AIPropsDetection>();
     }
 
     private void Start()
@@ -29,22 +38,28 @@ public class PlayerManager : MonoBehaviour
 
     public void EndGame()
     {
-        playerMovement.enabled = false;
-        playerDeath.enabled = false;
-        weaponHandling.enabled = false;
-        playerStatistics.enabled = false;
-        playerCrownHandling.enabled = false;
-        objectiveDetection.enabled = false;
+        ActivationCommon(false);
+        if (isAIPlayer)
+        {
+            ActivationAI(false);
+        } 
+        else
+        {
+            ActivationPlayer(false);
+        }
     }
 
     public void StartGame()
     {
-        playerMovement.enabled = true;
-        playerDeath.enabled = true;
-        weaponHandling.enabled = true;
-        playerStatistics.enabled = true;
-        playerCrownHandling.enabled = true;
-        objectiveDetection.enabled = true;
+        ActivationCommon();
+        if (isAIPlayer)
+        {
+            ActivationAI();
+        } 
+        else
+        {
+            ActivationPlayer();
+        }
     }
 
     public void SetPlayerLayer(int layer)
@@ -55,6 +70,25 @@ public class PlayerManager : MonoBehaviour
         objectiveDetection.SetLayer(layer);
         weaponHandling.SetLayerCanvas(layer);
     }
+
+    private void ActivationPlayer(bool activate = true)
+    {
+        playerMovement.enabled = activate;
+        objectiveDetection.enabled = activate;
+    }
     
+    private void ActivationCommon(bool activate = true)
+    {
+        weaponHandling.enabled = activate;
+        playerStatistics.enabled = activate;
+        playerCrownHandling.enabled = activate;
+        playerDeath.enabled = activate;
+    }
+    
+    private void ActivationAI(bool activate = true)
+    {
+        aiPlayerMovement.enabled = activate;
+        aiPropsDetection.enabled = activate;
+    }
     
 }

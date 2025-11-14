@@ -133,7 +133,7 @@ public class PlayerWeaponHandling : MonoBehaviour
         }
     }
 
-    private bool HasWeapon()
+    public bool HasWeapon()
     {
         return currentWeapon;
     }
