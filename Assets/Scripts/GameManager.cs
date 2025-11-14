@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using Cinemachine;
+using Gamemode;
 using Settings;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -99,7 +100,7 @@ public class GameManager : MonoBehaviour
 
     private void InitializeGameMode()
     {
-        switch (gameMode)
+        switch (GlobalSettings.Instance.CurrentGameMode)
         {
             case GameMode.FFA:
                 currentGameMode = new FreeForAll(GlobalSettings.Instance.MaxTime, GlobalSettings.Instance.ScoreGoal);
@@ -107,6 +108,10 @@ public class GameManager : MonoBehaviour
             case GameMode.CrownChase:
                 currentGameMode = new CaptureTheCrown(GlobalSettings.Instance.MaxTime,
                     GlobalSettings.Instance.ScoreGoal, crownPrefab);
+                break;
+            case GameMode.KingOfTheHill:
+                currentGameMode = new KingOfTheHill(GlobalSettings.Instance.MaxTime,
+                    GlobalSettings.Instance.ScoreGoal);
                 break;
             default:
                 throw new ArgumentOutOfRangeException();

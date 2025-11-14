@@ -44,7 +44,7 @@ public class PlayerMovement : MonoBehaviour
     {
         get
         {
-            Collider[] colliders = Physics.OverlapSphere(transform.position, 0.1f);
+            Collider[] colliders = Physics.OverlapSphere(transform.position, 0.1f, LayerMask.GetMask("Default"));
             foreach (Collider collider in colliders)
             {
                 if (collider.gameObject != gameObject)

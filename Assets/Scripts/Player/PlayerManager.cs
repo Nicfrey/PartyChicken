@@ -10,7 +10,7 @@ public class PlayerManager : MonoBehaviour
     private PlayerWeaponHandling weaponHandling;   
     private PlayerStatistics playerStatistics;
     private PlayerCrownHandling playerCrownHandling;
-    private PlayerCrownDetection playerCrownDetection;
+    private ObjectiveDetection objectiveDetection;
 
     private void Awake()
     {
@@ -19,7 +19,7 @@ public class PlayerManager : MonoBehaviour
         playerStatistics = GetComponent<PlayerStatistics>();
         weaponHandling = GetComponent<PlayerWeaponHandling>();
         playerCrownHandling = GetComponent<PlayerCrownHandling>();
-        playerCrownDetection = GetComponent<PlayerCrownDetection>();
+        objectiveDetection = GetComponent<ObjectiveDetection>();
     }
 
     private void Start()
@@ -34,7 +34,7 @@ public class PlayerManager : MonoBehaviour
         weaponHandling.enabled = false;
         playerStatistics.enabled = false;
         playerCrownHandling.enabled = false;
-        playerCrownDetection.enabled = false;
+        objectiveDetection.enabled = false;
     }
 
     public void StartGame()
@@ -44,7 +44,7 @@ public class PlayerManager : MonoBehaviour
         weaponHandling.enabled = true;
         playerStatistics.enabled = true;
         playerCrownHandling.enabled = true;
-        playerCrownDetection.enabled = true;
+        objectiveDetection.enabled = true;
     }
 
     public void SetPlayerLayer(int layer)
@@ -52,7 +52,7 @@ public class PlayerManager : MonoBehaviour
         gameObject.layer = layer;
         GetComponentInChildren<CinemachineVirtualCamera>().gameObject.layer = layer;
         GetComponentInChildren<Camera>().cullingMask |= 1 << layer;
-        playerCrownDetection.SetLayer(layer);
+        objectiveDetection.SetLayer(layer);
         weaponHandling.SetLayerCanvas(layer);
     }
     

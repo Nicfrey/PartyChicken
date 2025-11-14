@@ -131,7 +131,7 @@ public class PlayerWeaponHandling : MonoBehaviour
         RaycastHit hit;
         float distance = Vector3.Distance(weaponHolder.position, canvas.transform.position);
         int mask = ~((1 << gameObject.layer) | (1 << LayerMask.NameToLayer("Weapon")) |
-                     (1 << LayerMask.NameToLayer("Bullet")));
+                     (1 << LayerMask.NameToLayer("Bullet")) | (1 << LayerMask.NameToLayer("Objective")));
         if (Physics.Raycast(weaponHolder.position, weaponHolder.forward, out hit, distance, mask))
         {
             canvas.transform.position = hit.point;

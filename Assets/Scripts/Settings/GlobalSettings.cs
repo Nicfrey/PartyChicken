@@ -8,6 +8,7 @@ namespace Settings
     {
         FFA,
         CrownChase,
+        KingOfTheHill,
     }
 
     
