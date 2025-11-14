@@ -36,7 +36,7 @@ namespace AI
                 if (distance < closestDistance)
                 {
                     closestDistance = distance;
-                    if(NeedsWeapon() && results[i].TryGetComponent<Weapon>(out _))
+                    if(NeedsWeapon() && results[i].TryGetComponent<WeaponHolder>(out _))
                     {
                         closestCollider = results[i];
                         continue;

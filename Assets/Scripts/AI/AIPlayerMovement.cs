@@ -9,8 +9,8 @@ namespace AI
         Idle,
         Moving,
         PickingUpItem,
+        MovingToObjective,
         Attacking,
-        MovingToObjective
     }
     
     [RequireComponent(typeof(NavMeshAgent))]
@@ -19,20 +19,28 @@ namespace AI
         private NavMeshAgent agent;
         private AIMovementState state = AIMovementState.Idle;
         public AIMovementState State => state;
+
+        private Target target;
         
         
         private void Awake()
         {
             agent = GetComponent<NavMeshAgent>();
+            target = GetComponent<Target>();
         }
+        
 
         private void FixedUpdate()
         {
-            if(state != AIMovementState.Idle && agent.remainingDistance <= agent.stoppingDistance)
+            agent.updateRotation = state != AIMovementState.Attacking;
+            if(target.IsDead() || Vector3.Distance(transform.position, agent.destination) < agent.stoppingDistance)
             {
-                state = AIMovementState.Idle;
-                return;
+                MoveToPosition(transform.position, AIMovementState.Idle);
+                agent.ResetPath();
             }
+
+            if (target.IsDead())
+                return;
                 
             // Set random destination if idle
             if (state == AIMovementState.Idle)
@@ -47,11 +55,18 @@ namespace AI
             }
         }
 
-        public void MoveToPosition(Vector3 position, AIMovementState newState)
+        public void MoveToPosition(Vector3 position, AIMovementState newState, float stoppingDistance = 0.2f)
         {
+            if(target.IsDead())
+                return;
             agent.SetDestination(position);
-            this.state = newState;
+            agent.stoppingDistance = stoppingDistance;
+            state = newState;
         }
-        
+
+        public void SetPlayerPositionAndRotation(Vector3 transformPosition)
+        {
+            agent.Warp(transformPosition);
+        }
     }
 }

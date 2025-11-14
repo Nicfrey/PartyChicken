@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using AI;
 using TMPro;
 using UnityEngine;
 
 public class PlayerDeathBehavior : MonoBehaviour
 {
+    [SerializeField] private bool isAiPlayer = false;
     private Target target;
     private bool isRespawning = false;
 
@@ -57,7 +59,14 @@ public class PlayerDeathBehavior : MonoBehaviour
             int randomIndex = Random.Range(0, spawnPoints.Length);
             if (spawnPoints[randomIndex].GetComponent<SpawnPointBehavior>().IsAvailable())
             {
-                GetComponent<PlayerMovement>().SetPlayerPositionAndRotation(spawnPoints[randomIndex].transform.position,Quaternion.identity);
+                if (isAiPlayer)
+                {
+                    GetComponent<AIPlayerMovement>().SetPlayerPositionAndRotation(spawnPoints[randomIndex].transform.position);
+                }
+                else
+                {
+                    GetComponent<PlayerMovement>().SetPlayerPositionAndRotation(spawnPoints[randomIndex].transform.position,Quaternion.identity);
+                }
                 spawnPoints[randomIndex].GetComponent<SpawnPointBehavior>().SetUnavailable();
                 foundSpawnPoint = true;
             }
