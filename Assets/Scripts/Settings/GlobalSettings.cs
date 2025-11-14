@@ -10,7 +10,6 @@ namespace Settings
         CrownChase,
         KingOfTheHill,
     }
-
     
     public class GlobalSettings : MonoBehaviour
     {

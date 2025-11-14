@@ -23,9 +23,9 @@ namespace Managers
         private void Awake()
         {
             gameModeDropdown.options.Clear();
-            foreach (var mode in System.Enum.GetValues(typeof(GameMode)))
+            foreach (var mode in (GameMode[])System.Enum.GetValues(typeof(GameMode)))
             {
-                gameModeDropdown.options.Add(new TMP_Dropdown.OptionData(mode.ToString()));
+                gameModeDropdown.options.Add(new TMP_Dropdown.OptionData(mode.GetGameModeDescription()));
             }
             mapDropdown.options.Clear();
             foreach (var scene in availableMaps)
