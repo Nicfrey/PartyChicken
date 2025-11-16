@@ -15,6 +15,7 @@ public class Blackboard
             data[key] = blackboardType;
             return true;
         }
+        Debug.Log($"The key {key} does exist in the blackboard.");
         return false;
     }
 
@@ -26,18 +27,20 @@ public class Blackboard
             blackboardType.SetValue(newValue);
             return true;
         }
-
+        Debug.Log($"The key {key} does not exist in the blackboard.");
         return false;
     }
     
-    public T GetData<T>(string key)
+    public bool GetData<T>(string key, out T returnValue)
     {
         if (data.TryGetValue(key, out var value))
         {
             BlackboardType<T> blackboardType = (BlackboardType<T>)value;
-            return blackboardType.GetValue();
+            returnValue = blackboardType.GetValue();
+            return true;
         }
-
-        return default;
+        Debug.Log($"The key {key} does not exist in the blackboard.");
+        returnValue = default;
+        return false;
     }
 }

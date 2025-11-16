@@ -1,5 +1,7 @@
+using System;
 using System.Collections.Generic;
 using System.Transactions;
+using UnityEngine;
 
 namespace Utils.AI
 {
@@ -14,7 +16,6 @@ namespace Utils.AI
         
         public FiniteStateMachine(IState initialState, Blackboard blackboard)
         {
-            this.currentState = initialState;
             this.blackboard = blackboard;
             this.transitions = new Dictionary<IState, Transitions>();
             ChangeState(initialState);
@@ -36,6 +37,15 @@ namespace Utils.AI
     
         public void Update()
         {
+            try
+            {
+                currentState.Update(blackboard);
+            }
+            catch (Exception e)
+            {
+                Debug.LogException(e);
+            }
+            
             var currentTransition = transitions.GetValueOrDefault(currentState);
             if (currentTransition != null)
             {
@@ -43,8 +53,8 @@ namespace Utils.AI
                 {
                     if (transition.Key.Evaluate(blackboard))
                     {
+                        Debug.Log($"Transitioning from {currentState} to {transition.Value} because {transition.Key} evaluated to true.");
                         ChangeState(transition.Value);
-                        break;
                     }
                 }
             }
@@ -53,10 +63,16 @@ namespace Utils.AI
 
         private void ChangeState(IState newState)
         {
-            currentState?.OnExit(blackboard);
+            if(currentState != null)
+                currentState.OnExit(blackboard);
 
             currentState = newState;
             currentState.OnEnter(blackboard);
+        }
+        
+        public IState GetCurrentState()
+        {
+            return currentState;
         }
     }
 }

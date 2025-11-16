@@ -61,7 +61,7 @@ public class PlayerDeathBehavior : MonoBehaviour
             {
                 if (isAiPlayer)
                 {
-                    GetComponent<AIPlayerMovement>().SetPlayerPositionAndRotation(spawnPoints[randomIndex].transform.position);
+                    GetComponent<AiPlayerManager>().SetPlayerPositionAndRotation(spawnPoints[randomIndex].transform.position);
                 }
                 else
                 {

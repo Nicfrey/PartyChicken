@@ -268,13 +268,7 @@ PrefabInstance:
       addedObject: {fileID: 5620688579897762431}
     - targetCorrespondingSourceObject: {fileID: 179308493097817260, guid: 5a3e78a17f7282646987e861376c9ff1, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 754764416922822627}
-    - targetCorrespondingSourceObject: {fileID: 179308493097817260, guid: 5a3e78a17f7282646987e861376c9ff1, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 3788302493126453436}
-    - targetCorrespondingSourceObject: {fileID: 179308493097817260, guid: 5a3e78a17f7282646987e861376c9ff1, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1517199079503164667}
+      addedObject: {fileID: 8665562385096673509}
   m_SourcePrefab: {fileID: 100100000, guid: 5a3e78a17f7282646987e861376c9ff1, type: 3}
 --- !u!1 &6709375387657523270 stripped
 GameObject:
@@ -303,7 +297,7 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &754764416922822627
+--- !u!114 &8665562385096673509
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -312,38 +306,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 6709375387657523270}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a64174e99a0000148b639d8fd1502df8, type: 3}
+  m_Script: {fileID: 11500000, guid: 04ff247f6c47f4e4f885b8c356fcb4ee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionRadius: 5
-  layerMask:
-    serializedVersion: 2
-    m_Bits: 16384
---- !u!114 &3788302493126453436
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6709375387657523270}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fcd2ec4e1761cfe42bae57ef074d1838, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1517199079503164667
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6709375387657523270}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49e2ad8c0a459884eac8bef1e3e051c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  defaultDetectionRadius: 6.5
-  playerLayer:
+  stoppingDistanceDefault: 0.2
+  attackRange: 2
+  playerMask:
     serializedVersion: 2
     m_Bits: 960
+  propsMask:
+    serializedVersion: 2
+    m_Bits: 16384
+  defaultDetectionRadiusPlayer: 6.5
+  defaultDetectionRadiusProps: 5

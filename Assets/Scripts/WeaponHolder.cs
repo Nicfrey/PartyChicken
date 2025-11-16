@@ -61,7 +61,7 @@ public class WeaponHolder : MonoBehaviour
     }
 
 
-    void OnTriggerEnter(Collider other)
+    void OnTriggerStay(Collider other)
     {
         if(!hasWeapon)
             return;

@@ -15,9 +15,6 @@ public class PlayerManager : MonoBehaviour
     private PlayerCrownHandling playerCrownHandling;
     private ObjectiveDetection objectiveDetection;
     
-    [Header("AI Settings")]
-    private AIPlayerMovement aiPlayerMovement;
-    private AIPropsDetection aiPropsDetection;
 
     private void Awake()
     {
@@ -27,8 +24,6 @@ public class PlayerManager : MonoBehaviour
         weaponHandling = GetComponent<PlayerWeaponHandling>();
         playerCrownHandling = GetComponent<PlayerCrownHandling>();
         objectiveDetection = GetComponent<ObjectiveDetection>();
-        aiPlayerMovement = GetComponent<AIPlayerMovement>();
-        aiPropsDetection = GetComponent<AIPropsDetection>();
     }
 
     private void Start()
@@ -39,27 +34,15 @@ public class PlayerManager : MonoBehaviour
     public void EndGame()
     {
         ActivationCommon(false);
-        if (isAIPlayer)
-        {
-            ActivationAI(false);
-        } 
-        else
-        {
+        if(!isAIPlayer)
             ActivationPlayer(false);
-        }
     }
 
     public void StartGame()
     {
         ActivationCommon();
-        if (isAIPlayer)
-        {
-            ActivationAI();
-        } 
-        else
-        {
+        if(!isAIPlayer)
             ActivationPlayer();
-        }
     }
 
     public void SetPlayerLayer(int layer)
@@ -85,10 +68,5 @@ public class PlayerManager : MonoBehaviour
         playerDeath.enabled = activate;
     }
     
-    private void ActivationAI(bool activate = true)
-    {
-        aiPlayerMovement.enabled = activate;
-        aiPropsDetection.enabled = activate;
-    }
     
 }
