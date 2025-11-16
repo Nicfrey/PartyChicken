@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Transactions;
 using UnityEngine;
 
 namespace Utils.AI
@@ -73,6 +72,21 @@ namespace Utils.AI
         public IState GetCurrentState()
         {
             return currentState;
+        }
+
+        public T GetCondition<T>()
+        {
+            foreach (var transition in transitions)
+            {
+                foreach (var pair in transition.Value)
+                {
+                    if (pair.Key is T condition)
+                    {
+                        return condition;
+                    }
+                }
+            }
+            return default;
         }
     }
 }

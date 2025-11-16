@@ -15,8 +15,14 @@ namespace AI
         [SerializeField] private float defaultDetectionRadiusPlayer = 6.5f;
         [SerializeField] private float defaultDetectionRadiusProps = 5f;
 
+        private NavMeshAgent agent;
         private FiniteStateMachine finiteStateMachine;
         private Blackboard blackboard;
+
+        private void Awake()
+        {
+            agent = GetComponent<NavMeshAgent>();
+        }
 
         private void Start()
         {
@@ -56,13 +62,19 @@ namespace AI
         
         private void Update()
         {
-            Debug.Log($"{gameObject.name} Current State: {finiteStateMachine.GetCurrentState().GetType().Name}");
             finiteStateMachine.Update();
         }
 
         public void SetPlayerPositionAndRotation(Vector3 transformPosition)
         {
             GetComponent<NavMeshAgent>().Warp(transformPosition);
+        }
+        
+        public void RemovePlayerLayerMask(int layerMask)
+        {
+            LayerMask newMask = playerMask & ~(1 << layerMask);
+            playerMask = newMask;
+            finiteStateMachine.GetCondition<IsEnemyInRange>().SetLayerMask(playerMask);
         }
     }
 }

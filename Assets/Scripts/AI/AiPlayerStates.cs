@@ -50,7 +50,7 @@ namespace AI
             
             if (TryFindValidNavMeshPosition(targetPosition, out Vector3 validPosition))
             {
-                Debug.Log($"Found new patrol destination at {validPosition} at {Time.time}");
+                Debug.Log($"Found new patrol destination at {validPosition}");
                 cachedAgent.SetDestination(validPosition);
             }
             else
@@ -117,7 +117,10 @@ namespace AI
     {
         public void OnEnter(Blackboard blackboard)
         {
-            
+            blackboard.GetData("NavMeshAgent", out NavMeshAgent navMeshAgent);
+            blackboard.GetData("TargetEnemy", out Target targetEnemy);
+            Debug.Log($"[AttackEnemy] Targeting enemy: {targetEnemy.gameObject.name}");
+            navMeshAgent.SetDestination(targetEnemy.transform.position);
         }
 
         public void OnExit(Blackboard blackboard)

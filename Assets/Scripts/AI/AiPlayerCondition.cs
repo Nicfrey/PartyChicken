@@ -21,34 +21,43 @@ namespace AI
             blackboard.GetData("Transform", out Transform transform);
             blackboard.GetData("Health", out Target health);
             blackboard.GetData("PlayerWeaponHandler", out PlayerWeaponHandling playerWeaponHandling);
-            bool hasWeapon = playerWeaponHandling.HasWeapon();
+            bool needsWeapon = NeedsWeapon(health.GetHealth(), playerWeaponHandling.HasWeapon());
+            bool needsHealth = NeedsHealth(health.GetHealth());
 
             Collider[] results = new Collider[10];
             var size = Physics.OverlapSphereNonAlloc(transform.position, detectionRadius, results, propsLayer);
+            
             float closestDistance = float.MaxValue;
             Collider closestCollider = null;
+            
             for (int i = 0; i < size; i++)
             {
-                float distance = Vector3.Distance(transform.position, results[i].transform.position);
-                if (distance < closestDistance)
+                Collider collider = results[i];
+                if (!collider)
+                    continue;
+                
+                float distance = Vector3.Distance(transform.position, collider.transform.position);
+                bool isValid = false;
+
+                if (needsWeapon && collider.TryGetComponent<WeaponHolder>(out WeaponHolder weaponHolder))
+                {
+                    if (weaponHolder.HasWeapon())
+                    {
+                        isValid = true;
+                    }
+                }
+                else if (needsHealth && collider.TryGetComponent<HeartBehavior>(out HeartBehavior heartBehavior))
+                {
+                    if (heartBehavior.CanHeal())
+                    {
+                        isValid = true;
+                    }
+                }
+
+                if (isValid && distance < closestDistance)
                 {
                     closestDistance = distance;
-                    if (NeedsWeapon(health.GetHealth(), hasWeapon) && results[i].TryGetComponent<WeaponHolder>(out WeaponHolder weaponHolder))
-                    {
-                        if(weaponHolder.HasWeapon())
-                        {
-                            closestCollider = results[i];
-                        }
-                        continue;
-                    }
-
-                    if (NeedsHealth(health.GetHealth()) && results[i].TryGetComponent<HeartBehavior>(out HeartBehavior heartBehavior))
-                    {
-                        if(heartBehavior.CanHeal())
-                        {
-                            closestCollider = results[i];
-                        }
-                    }
+                    closestCollider = collider;
                 }
             }
 
@@ -85,13 +94,18 @@ namespace AI
 
     public class IsEnemyInRange : ICondition
     {
-        private readonly LayerMask playerLayer;
+        private LayerMask playerLayer;
         private readonly float defaultDetectionRadius;
 
         public IsEnemyInRange(LayerMask playerLayer, float defaultDetectionRadius)
         {
             this.playerLayer = playerLayer;
             this.defaultDetectionRadius = defaultDetectionRadius;
+        }
+        
+        public void SetLayerMask(LayerMask playerLayer)
+        {
+            this.playerLayer = playerLayer;
         }
 
         public bool Evaluate(Blackboard blackboard)

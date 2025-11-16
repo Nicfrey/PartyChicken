@@ -24,10 +24,12 @@ namespace Settings
         [SerializeField] private GameMode currentGameMode;
         [SerializeField] private int scoreGoal = 10;
         [SerializeField] private int maxTime = 300;
+        [SerializeField] private bool fillWithBots = true;
         public GameMode CurrentGameMode { get; set; }
         public int ScoreGoal { get; set; }
         public int MaxTime { get; set; }
         public int LevelSelected { get; set; }
+        public bool FillWithBots { get; set; }
         
 
         private void Awake()

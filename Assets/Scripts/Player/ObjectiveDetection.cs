@@ -8,9 +8,21 @@ using UnityEngine;
 public class ObjectiveDetection : MonoBehaviour
 {
     private PlayerCrownHandling playerCrownHandling;
+    private PlayerManager playerManager;
     private PlayerStatistics playerStatistics;
     private KingOfTheHill _kingOfTheHill;
     [SerializeField] private Transform arrowTransform;
+
+
+    private void Awake()
+    {
+        playerManager = GetComponent<PlayerManager>();
+        if (playerManager.IsAIPlayer)
+        {
+            arrowTransform.gameObject.SetActive(false);
+            enabled = false;
+        }
+    }
 
     private void Start()
     {

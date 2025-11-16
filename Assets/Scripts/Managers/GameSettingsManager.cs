@@ -19,6 +19,7 @@ namespace Managers
         [SerializeField] private Slider gameScoreSlider;
         [SerializeField] private TMP_Text gameDurationText;
         [SerializeField] private TMP_Text gameScoreText;
+        [SerializeField] private Toggle fillWithBots;
 
         private void Awake()
         {
@@ -40,6 +41,7 @@ namespace Managers
             mapDropdown.value = GlobalSettings.Instance.LevelSelected;
             gameDurationSlider.value = GlobalSettings.Instance.MaxTime;
             gameScoreSlider.value = GlobalSettings.Instance.ScoreGoal;
+            fillWithBots.isOn = GlobalSettings.Instance.FillWithBots;
             UpdateGameDurationText();
             UpdateGameScoreText();
         }
@@ -60,6 +62,7 @@ namespace Managers
             GlobalSettings.Instance.LevelSelected = mapDropdown.value;
             GlobalSettings.Instance.MaxTime = (int) gameDurationSlider.value;
             GlobalSettings.Instance.ScoreGoal = (int) gameScoreSlider.value;
+            GlobalSettings.Instance.FillWithBots = fillWithBots.isOn;
             SceneManager.LoadScene(availableMaps[GlobalSettings.Instance.LevelSelected]);
         }
     } 

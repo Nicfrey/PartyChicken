@@ -7,6 +7,7 @@ using UnityEngine;
 public class PlayerManager : MonoBehaviour
 {
     [SerializeField] private bool isAIPlayer = false;
+    public bool IsAIPlayer => isAIPlayer;
     [Header("Player Settings")]
     private PlayerMovement playerMovement;
     private PlayerDeathBehavior playerDeath;
@@ -48,9 +49,12 @@ public class PlayerManager : MonoBehaviour
     public void SetPlayerLayer(int layer)
     {
         gameObject.layer = layer;
-        GetComponentInChildren<CinemachineVirtualCamera>().gameObject.layer = layer;
-        GetComponentInChildren<Camera>().cullingMask |= 1 << layer;
-        objectiveDetection.SetLayer(layer);
+        if(!isAIPlayer)
+        {
+            GetComponentInChildren<CinemachineVirtualCamera>().gameObject.layer = layer;
+            GetComponentInChildren<Camera>().cullingMask |= 1 << layer;
+            objectiveDetection.SetLayer(layer);
+        }
         weaponHandling.SetLayerCanvas(layer);
     }
 
