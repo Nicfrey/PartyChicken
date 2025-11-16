@@ -1,5 +1,4 @@
 using System;
-using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.AI;
 using Utils.AI;
@@ -14,7 +13,11 @@ namespace AI
         [SerializeField] private LayerMask propsMask;
         [SerializeField] private float defaultDetectionRadiusPlayer = 6.5f;
         [SerializeField] private float defaultDetectionRadiusProps = 5f;
-
+        
+        [SerializeField] private GameObject avatar;
+        
+        private Target target;
+        private Animator animator;
         private NavMeshAgent agent;
         private FiniteStateMachine finiteStateMachine;
         private Blackboard blackboard;
@@ -22,6 +25,8 @@ namespace AI
         private void Awake()
         {
             agent = GetComponent<NavMeshAgent>();
+            target = GetComponent<Target>();
+            animator = avatar.GetComponent<Animator>();
         }
 
         private void Start()
@@ -63,6 +68,18 @@ namespace AI
         private void Update()
         {
             finiteStateMachine.Update();
+        }
+
+        private void LateUpdate()
+        {
+            Vector3 currentVelocity = agent.velocity;
+            currentVelocity.y = 0f;
+            animator.SetFloat("Speed", currentVelocity.magnitude);
+            animator.SetBool("IsGrounded", true);
+            Vector3 velocityWithAvatarRotation = avatar.transform.InverseTransformDirection(currentVelocity);
+            animator.SetFloat("Right",velocityWithAvatarRotation.x);
+            animator.SetFloat("Forward", velocityWithAvatarRotation.z);
+            animator.SetBool("IsDead",target.IsDead());
         }
 
         public void SetPlayerPositionAndRotation(Vector3 transformPosition)
