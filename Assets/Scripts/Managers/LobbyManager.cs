@@ -34,7 +34,7 @@ namespace Managers
 
         private void Update()
         {
-            if (_playerSkinSelections.Count > 1)
+            if (_playerSkinSelections.Count >= 1)
             {
                 int numberReady = GetNumberOfPlayersReady();
 
