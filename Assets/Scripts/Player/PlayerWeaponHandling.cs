@@ -72,6 +72,22 @@ public class PlayerWeaponHandling : MonoBehaviour
         canvas.gameObject.SetActive(true);
     }
 
+    public void Shoot(bool isShooting)
+    {
+        if (!enabled || target.IsDead() || !HasWeapon())
+        {
+            this.isShooting = false;
+            return;
+        }
+
+        if (HasWeapon())
+        {
+            this.isShooting = isShooting;
+            if (!isShooting)
+                currentWeapon.StopShoot();
+        }
+    }
+
     public void Shoot(InputAction.CallbackContext context)
     {
         if (!enabled || target.IsDead())
@@ -121,7 +137,7 @@ public class PlayerWeaponHandling : MonoBehaviour
         }
     }
 
-    private void Throw()
+    public void Throw()
     {
         if (HasWeapon())
         {
@@ -133,7 +149,7 @@ public class PlayerWeaponHandling : MonoBehaviour
         }
     }
 
-    private bool HasWeapon()
+    public bool HasWeapon()
     {
         return currentWeapon;
     }
@@ -162,5 +178,15 @@ public class PlayerWeaponHandling : MonoBehaviour
     public bool IsAiming()
     {
         return isAiming;
+    }
+
+    public bool HasAmmo()
+    {
+        return currentWeapon.HasAmmo();
+    }
+
+    public float GetRange()
+    {
+        return currentWeapon.GetRange();
     }
 }

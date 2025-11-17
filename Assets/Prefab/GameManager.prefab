@@ -411,6 +411,7 @@ MonoBehaviour:
   playerInputManager: {fileID: 6656521341155144146}
   lobbyCameraObject: {fileID: 4903667804778856401}
   playerPrefab: {fileID: 179308493097817260, guid: 5a3e78a17f7282646987e861376c9ff1, type: 3}
+  AiPlayerPrefab: {fileID: 6709375387657523270, guid: e817273815a3e30419901218a0c2bac1, type: 3}
   gameMode: 0
   crownPrefab: {fileID: 355759675188995521, guid: a461ed144d4559b4ea33f2c5f5d2dcc4, type: 3}
   debugMode: 0

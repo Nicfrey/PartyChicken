@@ -199,4 +199,14 @@ public class Weapon : MonoBehaviour
             target.TakeDamage(damage,owner);
         }
     }
+
+    public bool HasAmmo()
+    {
+        return currentAmmunition > 0;
+    }
+
+    public float GetRange()
+    {
+        return range;
+    }
 }

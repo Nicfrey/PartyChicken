@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using AI;
 using Cinemachine;
 using Gamemode;
 using Settings;
@@ -24,6 +25,8 @@ public class GameManager : MonoBehaviour
 
     [Header("Prefabs for players")] [SerializeField]
     private GameObject playerPrefab;
+
+    [SerializeField] private GameObject AiPlayerPrefab;
 
     [Header("GameMode Settings")] [SerializeField]
     private GameMode gameMode;
@@ -84,6 +87,20 @@ public class GameManager : MonoBehaviour
             .SelectSkin(debugMode ? 0 : GlobalSettings.Instance.SkinSelected[obj.playerIndex].SkinSelected);
     }
 
+    private IEnumerator SetPlayerPositionAfterFrame(GameObject obj, int playerIndex)
+    {
+        yield return null;
+
+        obj.layer = (int)Mathf.Log(GlobalSettings.Instance.PlayerLayers[playerIndex].value, 2);
+        AiPlayerManager aiPlayerManager = obj.GetComponent<AiPlayerManager>();
+        aiPlayerManager.SetPlayerPositionAndRotation(spawnPoints[playerIndex].transform.position);
+        obj.GetComponent<PlayerManager>()
+            .SetPlayerLayer((int)Mathf.Log(GlobalSettings.Instance.PlayerLayers[playerIndex].value, 2));
+        obj.GetComponent<PlayerSkinSelection>().SelectSkin(playerIndex);
+        aiPlayerManager.RemovePlayerLayerMask(
+            (int)Mathf.Log(GlobalSettings.Instance.PlayerLayers[playerIndex].value, 2));
+    }
+
     private void DeactivateLobbyCamera(PlayerInput obj)
     {
         if (obj.playerIndex == 0)
@@ -100,6 +117,11 @@ public class GameManager : MonoBehaviour
 
     private void InitializeGameMode()
     {
+        if (debugMode)
+        {
+            GlobalSettings.Instance.CurrentGameMode = gameMode;
+        }
+
         switch (GlobalSettings.Instance.CurrentGameMode)
         {
             case GameMode.FFA:
@@ -177,6 +199,23 @@ public class GameManager : MonoBehaviour
                 {
                     playerInputManager.JoinPlayer(i, -1, null, GlobalSettings.Instance.SkinSelected[i].SelectedDevice);
                 }
+
+                FillWithBots();
+            }
+        }
+    }
+
+    private void FillWithBots()
+    {
+        if (GlobalSettings.Instance.FillWithBots)
+        {
+            int numberOfBotsToAdd = 4 - GlobalSettings.Instance.SkinSelected.Count;
+            for (int i = 0; i < numberOfBotsToAdd; i++)
+            {
+                GameObject botInput = Instantiate(AiPlayerPrefab);
+                currentGameMode.AddPlayerStatistic(botInput);
+                StartCoroutine(SetPlayerPositionAfterFrame(botInput,
+                    GlobalSettings.Instance.SkinSelected.Count + i));
             }
         }
     }

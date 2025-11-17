@@ -40,7 +40,12 @@ public class HeartBehavior : MonoBehaviour
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    public bool CanHeal()
+    {
+        return !heartTaken;
+    }
+
+    void OnTriggerStay(Collider other)
     {
         if(heartTaken)
             return;

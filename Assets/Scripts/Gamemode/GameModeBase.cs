@@ -41,6 +41,11 @@ public abstract class GameModeBase
     {
         players.Add(playerInput.GetComponent<PlayerStatistics>());
     }
+    
+    public void AddPlayerStatistic(GameObject player)
+    {
+        players.Add(player.GetComponent<PlayerStatistics>());
+    }
 
     public virtual void StartGame()
     {

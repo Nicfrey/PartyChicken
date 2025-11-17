@@ -106,7 +106,7 @@ GameObject:
   - component: {fileID: 5946852588727459986}
   - component: {fileID: 2497754117234564921}
   - component: {fileID: 6730593428359197884}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: Crown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
