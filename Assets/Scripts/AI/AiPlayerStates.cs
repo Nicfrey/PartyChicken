@@ -8,13 +8,16 @@ namespace AI
     {
         private readonly float stoppingDistance;
         private readonly float patrolRadius = 10f;
+        private readonly GameObject[] patrolPoints;
+        private Vector3 currentDestination;
 
         private NavMeshAgent cachedAgent;
         private Transform cachedTransform;
         
-        public PatrolState(float stoppingDistance, float patrolRadius = 10f)
+        public PatrolState(float stoppingDistance, GameObject[] patrolPoints, float patrolRadius = 10f)
         {
             this.patrolRadius = patrolRadius;
+            this.patrolPoints = patrolPoints;
             this.stoppingDistance = stoppingDistance;
         }
         
@@ -44,38 +47,19 @@ namespace AI
 
         private void FindNewDestination()
         {
-            Vector2 randomCircle = Random.insideUnitCircle * patrolRadius;
-            Vector3 randomDirection = new Vector3(randomCircle.x, 0f, randomCircle.y);
-            Vector3 targetPosition = cachedTransform.position + randomDirection;
-            
-            if (TryFindValidNavMeshPosition(targetPosition, out Vector3 validPosition))
+            bool foundPoint = false;
+            while (!foundPoint)
             {
-                Debug.Log($"Found new patrol destination at {validPosition}");
-                cachedAgent.SetDestination(validPosition);
-            }
-            else
-            {
-                Debug.LogWarning("[PatrolState] Impossible de trouver une position valide sur le NavMesh");
-            }
-        }
-        
-        private bool TryFindValidNavMeshPosition(Vector3 targetPosition, out Vector3 validPosition, int maxAttempts = 5)
-        {
-            validPosition = Vector3.zero;
-        
-            for (int i = 0; i < maxAttempts; i++)
-            {
-                if (NavMesh.SamplePosition(targetPosition, out NavMeshHit hit, patrolRadius, NavMesh.AllAreas))
+                int randomIndex = Random.Range(0, patrolPoints.Length);
+                Vector3 randomPoint = patrolPoints[randomIndex].transform.position;
+                if (Vector3.Distance(randomPoint, currentDestination) < 1f)
                 {
-                    validPosition = hit.position;
-                    return true;
+                    continue;
                 }
-            
-                Vector2 randomCircle = Random.insideUnitCircle * patrolRadius;
-                targetPosition = cachedTransform.position + new Vector3(randomCircle.x, 0f, randomCircle.y);
+                currentDestination = randomPoint;
+                foundPoint = true;
             }
-        
-            return false;
+            cachedAgent.SetDestination(currentDestination);
         }
     }
 

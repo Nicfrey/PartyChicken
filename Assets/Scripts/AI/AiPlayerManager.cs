@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Utils.AI;
@@ -40,7 +41,7 @@ namespace AI
             blackboard.AddData("TargetPropTransform", default(Transform));
             blackboard.AddData("DetectionRadiusPlayer", 5f);
 
-            PatrolState patrolState = new PatrolState(stoppingDistanceDefault);
+            PatrolState patrolState = new PatrolState(stoppingDistanceDefault, GetMovePatrols());
             MoveToProps moveToPropsState = new MoveToProps(stoppingDistanceDefault);
             AttackEnemy attackEnemyState = new AttackEnemy();
             DeadState deadState = new DeadState();
@@ -92,6 +93,11 @@ namespace AI
             LayerMask newMask = playerMask & ~(1 << layerMask);
             playerMask = newMask;
             finiteStateMachine.GetCondition<IsEnemyInRange>().SetLayerMask(playerMask);
+        }
+        private GameObject[] GetMovePatrols()
+        {
+            GameObject[] patrols = GameObject.FindGameObjectsWithTag("PatrolPosition");
+            return patrols;
         }
     }
 }
