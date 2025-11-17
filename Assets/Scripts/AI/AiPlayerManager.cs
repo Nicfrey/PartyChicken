@@ -92,12 +92,17 @@ namespace AI
         {
             LayerMask newMask = playerMask & ~(1 << layerMask);
             playerMask = newMask;
-            finiteStateMachine.GetCondition<IsEnemyInRange>().SetLayerMask(playerMask);
+            finiteStateMachine?.GetCondition<IsEnemyInRange>().SetLayerMask(playerMask);
         }
         private GameObject[] GetMovePatrols()
         {
             GameObject[] patrols = GameObject.FindGameObjectsWithTag("PatrolPosition");
             return patrols;
+        }
+
+        public void ResetPath()
+        {
+            GetComponent<NavMeshAgent>().ResetPath();
         }
     }
 }

@@ -16,6 +16,9 @@ public class PlayerManager : MonoBehaviour
     private PlayerCrownHandling playerCrownHandling;
     private ObjectiveDetection objectiveDetection;
     
+    [Header("AI Settings")]
+    private AiPlayerManager aiPlayerManager;
+    
 
     private void Awake()
     {
@@ -25,6 +28,7 @@ public class PlayerManager : MonoBehaviour
         weaponHandling = GetComponent<PlayerWeaponHandling>();
         playerCrownHandling = GetComponent<PlayerCrownHandling>();
         objectiveDetection = GetComponent<ObjectiveDetection>();
+        aiPlayerManager = GetComponent<AiPlayerManager>();
     }
 
     private void Start()
@@ -37,13 +41,23 @@ public class PlayerManager : MonoBehaviour
         ActivationCommon(false);
         if(!isAIPlayer)
             ActivationPlayer(false);
+        else 
+            ActivationAI(false);
     }
 
     public void StartGame()
     {
         ActivationCommon();
-        if(!isAIPlayer)
+        if (!isAIPlayer)
             ActivationPlayer();
+        else
+            ActivationAI();
+    }
+
+    private void ActivationAI(bool activate = true)
+    {
+        aiPlayerManager.ResetPath();
+        aiPlayerManager.enabled = activate;
     }
 
     public void SetPlayerLayer(int layer)
