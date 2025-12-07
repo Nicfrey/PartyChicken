@@ -7,6 +7,7 @@ using Gamemode;
 using Settings;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Users;
 using UnityEngine.SceneManagement;
 
 
@@ -190,14 +191,32 @@ public class GameManager : MonoBehaviour
         {
             spawnPoints.Clear();
             spawnPoints = new List<SpawnPointBehavior>(FindObjectsOfType<SpawnPointBehavior>());
+            
+            UnpairAllDevices();
+            
             playerInputManager.joinBehavior = debugMode
                 ? PlayerJoinBehavior.JoinPlayersWhenButtonIsPressed
                 : PlayerJoinBehavior.JoinPlayersManually;
+            
+            
             if (!debugMode)
             {
                 for (int i = 0; i < GlobalSettings.Instance.SkinSelected.Count; i++)
                 {
-                    playerInputManager.JoinPlayer(i, -1, null, GlobalSettings.Instance.SkinSelected[i].SelectedDevice);
+                    if (GlobalSettings.Instance.SkinSelected[i].IsKeyboard)
+                    {
+                        Debug.Log($"Player {i} joined with keyboard");
+                        PlayerInput newPlayer = PlayerInput.Instantiate(playerInputManager.playerPrefab,
+                            playerIndex: i, splitScreenIndex: -1, pairWithDevice: null,
+                            controlScheme: "ControlScheme");
+                        newPlayer.SwitchCurrentControlScheme("ControlScheme", Keyboard.current, Mouse.current);
+                        newPlayer.GetComponent<PlayerSkinSelection>().IsKeyboardPlayer = true;
+                    }
+                    else
+                    {
+                        Debug.Log($"Player {i} joined with controller");
+                        playerInputManager.JoinPlayer(i, -1, null, GlobalSettings.Instance.SkinSelected[i].SelectedDevice);
+                    }
                 }
 
                 FillWithBots();
@@ -217,6 +236,15 @@ public class GameManager : MonoBehaviour
                 StartCoroutine(SetPlayerPositionAfterFrame(botInput,
                     GlobalSettings.Instance.SkinSelected.Count + i));
             }
+        }
+    }
+
+    private void UnpairAllDevices()
+    {
+        var users = InputUser.all;
+        foreach (var user in users)
+        {
+            user.UnpairDevices();
         }
     }
 

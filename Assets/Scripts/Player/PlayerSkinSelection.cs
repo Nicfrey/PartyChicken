@@ -7,6 +7,8 @@ public class PlayerSkinSelection : MonoBehaviour
     [SerializeField]
     private GameObject[] skins;
 
+    public bool IsKeyboardPlayer { get; set; } = false;
+
     [SerializeField] private GameObject defaultSkin;
     public void SelectSkin(int index)
     {

@@ -166,7 +166,8 @@ public class PlayerWeaponHandling : MonoBehaviour
         }
         else
         {
-            canvas.transform.localPosition = Vector3.forward * 5f;
+            float aimDistance = IsAiming() ? 10f : 5f;
+            canvas.transform.localPosition = Vector3.forward * aimDistance;
         }
     }
 

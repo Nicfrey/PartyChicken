@@ -11,6 +11,7 @@ public class PlayerLobbySelection : MonoBehaviour
     private bool _canSelect = false;
 
     public InputDevice SelectedDevice { get; set; }
+    public bool IsKeyboard { get; set; }
 
     private void Start()
     {

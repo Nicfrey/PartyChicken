@@ -15,6 +15,7 @@ namespace Managers
         [SerializeField] private GameObject cameraLobby;
 
         private List<PlayerLobbySelection> _playerSkinSelections = new();
+        bool OnePlayerKeyboardJoined = false;
         
         public void ReturnToMainMenu()
         {
@@ -34,6 +35,11 @@ namespace Managers
 
         private void Update()
         {
+            if(!OnePlayerKeyboardJoined && Keyboard.current.spaceKey.wasPressedThisFrame)
+            {
+                JoinPlayerKeyboard();
+            }
+            
             if (_playerSkinSelections.Count >= 1)
             {
                 int numberReady = GetNumberOfPlayersReady();
@@ -70,7 +76,21 @@ namespace Managers
             _playerSkinSelections.Add(playerSelection);
             playerSelection.GetSelectionPlayerUI();
             playerSelection.ActivateCameraPlayer();
-            playerSelection.SelectedDevice = newPlayer.devices[0];
+            if (newPlayer.devices.Count > 0)
+            {
+                playerSelection.SelectedDevice = newPlayer.devices[0];
+            }
+        }
+
+        public void JoinPlayerKeyboard()
+        {
+            if (playerInputManager.playerCount < playerInputManager.maxPlayerCount)
+            {
+                PlayerInput newPlayer = PlayerInput.Instantiate(playerInputManager.playerPrefab, playerIndex: playerInputManager.playerCount, splitScreenIndex: -1, pairWithDevice: null, controlScheme: "ControlScheme");
+                newPlayer.SwitchCurrentControlScheme("ControlScheme", Keyboard.current, Mouse.current);
+                newPlayer.GetComponent<PlayerLobbySelection>().IsKeyboard = true;
+                OnePlayerKeyboardJoined = true;
+            }
         }
         
         private void DeactivateLobbyCamera(PlayerInput newPlayer)

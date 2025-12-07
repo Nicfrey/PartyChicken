@@ -18,6 +18,10 @@ public class PlayerMovement : MonoBehaviour
     private float walkSpeed = 2f;
     [SerializeField]
     private float jumpForce = 5f;
+    [SerializeField]
+    private float sensitivityController = 90f;
+    [SerializeField]
+    private float sensitivityMouse = 270f;
     [Header("Movement Slope")]
     [SerializeField]
     private float slope = 40f;
@@ -32,6 +36,7 @@ public class PlayerMovement : MonoBehaviour
     private Transform aimCamera;
     
     private PlayerInput playerInput;
+    private PlayerSkinSelection playerSkinSelection;
     private PlayerWeaponHandling playerWeaponHandling;
     private Rigidbody rb;
     
@@ -73,15 +78,27 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void Start()
+    private void OnEnable()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
+
+    private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         playerInput = GetComponent<PlayerInput>();
-        playerIndex = playerInput.playerIndex;
+        playerWeaponHandling = GetComponent<PlayerWeaponHandling>();
         target = GetComponent<Target>();
+        playerSkinSelection = GetComponent<PlayerSkinSelection>();
+    }
+
+    void Start()
+    {
+        playerIndex = playerInput.playerIndex;
         target.onDeath.AddListener(HandleDeath);
         target.onRevive.AddListener(HandleRevive);
-        playerWeaponHandling = GetComponent<PlayerWeaponHandling>();
     }
     private void HandleRevive()
     {
@@ -130,6 +147,13 @@ public class PlayerMovement : MonoBehaviour
     {
         return playerWeaponHandling.IsAiming() ? walkSpeed : speed;
     }
+    
+    private float GetCurrentSensitivity()
+    {
+        float sensitivity = playerSkinSelection.IsKeyboardPlayer ? sensitivityMouse : sensitivityController;
+        return sensitivity * (playerWeaponHandling.IsAiming() ? 0.5f : 1f);
+    }
+    
     void Update()
     {
         HandleAnimation();
@@ -141,7 +165,7 @@ public class PlayerMovement : MonoBehaviour
         if (rotateDirection != Vector2.zero && playerIndex == playerInput.playerIndex)
         {
             Vector3 rotation = new Vector3(rotateDirection.x, 0, rotateDirection.y);
-            avatar.transform.Rotate(Vector3.up, rotation.x * Time.deltaTime * 90f);
+            avatar.transform.Rotate(Vector3.up, rotation.x * Time.deltaTime * GetCurrentSensitivity());
         }
     }
 
@@ -172,6 +196,8 @@ public class PlayerMovement : MonoBehaviour
     void OnDisable()
     {
         target.onDeath.AddListener(HandleDeath);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     public void AddImpact(Vector3 direction, float forceImpulse)

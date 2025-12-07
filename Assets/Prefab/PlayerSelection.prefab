@@ -122,8 +122,16 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 0f70db09-c351-4d61-bc8e-1b852b520293
     m_ActionName: UI/Return[/XInputControllerWindows/buttonEast,/XInputControllerWindows1/buttonEast]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9ea594f4-79e3-4fd9-944d-578bcc7b7e57
+    m_ActionName: PlayerMovements/Jump[/XInputControllerWindows2/buttonSouth,/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 111c9080-0e1c-4bad-b7c1-df7413c24d0a
+    m_ActionName: PlayerMovements/Aim[/XInputControllerWindows2/leftTrigger,/Mouse/rightButton]
   m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
+  m_DefaultControlScheme: ControlScheme
   m_DefaultActionMap: UI
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}

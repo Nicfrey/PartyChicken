@@ -256,6 +256,8 @@ MonoBehaviour:
   speed: 5
   walkSpeed: 2
   jumpForce: 5
+  sensitivityController: 90
+  sensitivityMouse: 180
   slope: 40
   avatar: {fileID: 1739362315256316331}
   actionAsset: {fileID: -944628639613478452, guid: 410eba4dcfdde3c4da62dba850bd2b09, type: 3}
@@ -336,6 +338,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb277225dad7a6849b00fc65c3d4167e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isAiPlayer: 0
   respawnTime: 3
   respawnTimerText: {fileID: 7190278595353330999}
   respawnTimerUI: {fileID: 8251539916820823814}
@@ -380,6 +383,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aeb1a53ea155a554580c49643d068e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isAIPlayer: 0
 --- !u!114 &1043827342604546810
 MonoBehaviour:
   m_ObjectHideFlags: 0
