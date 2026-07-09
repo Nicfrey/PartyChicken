@@ -58,6 +58,7 @@ public class PlayerManager : MonoBehaviour
     {
         aiPlayerManager.ResetPath();
         aiPlayerManager.enabled = activate;
+        GetComponent<Rigidbody>().interpolation = RigidbodyInterpolation.None;
     }
 
     public void SetPlayerLayer(int layer)
